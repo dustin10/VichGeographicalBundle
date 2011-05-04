@@ -16,8 +16,10 @@ use Vich\GeographicalBundle\DependencyInjection\Configuration;
  */
 class VichGeographicalExtension extends Extension
 {   
+    /**
+     * @var array $entityManagers
+     */
     private $entityManagers = array();
-    private $documentManagers = array();
     
     /**
      * Loads the extension.
@@ -33,7 +35,7 @@ class VichGeographicalExtension extends Extension
         $config = $processor->process($configuration->getConfigTree(), $configs);
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        //$loader->load('annotations.xml');
+        $loader->load('annotations.xml');
         $loader->load('query.xml');
         $loader->load('listener.xml');
         
@@ -49,19 +51,10 @@ class VichGeographicalExtension extends Extension
             
             $this->entityManagers[] = $name;
         }
-        
-        foreach ($config['mongodb'] as $name => $params) {
-            if ($params['enabled']) {
-                $definition = $container->getDefinition($listenerName);
-                $definition->addTag(sprintf('doctrine.odm.mongodb.%s_event_subscriber', $name));
-            }
-            
-            $this->documentManagers[] = $name;
-        }
     }
     
     /**
-     * Validates the ODM and DBAL configuration.
+     * Validates the DBAL configuration.
      * 
      * @param ContainerBuilder $container The container builder
      */
@@ -70,12 +63,6 @@ class VichGeographicalExtension extends Extension
         foreach ($this->entityManagers as $name) {
             if (!$container->hasDefinition(sprintf('doctrine.dbal.%s_connection', $name))) {
                 throw new \InvalidArgumentException(sprintf('Invalid %s config: DBAL connection "%s" not found', $this->getAlias(), $name));
-            }
-        }
-
-        foreach ($this->documentManagers as $name) {
-            if (!$container->hasDefinition(sprintf('doctrine.odm.mongodb.%s_document_manager', $name))) {
-                throw new \InvalidArgumentException(sprintf('Invalid %s config: document manager "%s" not found', $this->getAlias(), $name));
             }
         }
     }

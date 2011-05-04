@@ -3,6 +3,7 @@
 namespace Vich\GeographicalBundle\Listener;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\EventArgs;
 use Vich\GeographicalBundle\Listener\GeographicalListenerInterface;
 use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
 
@@ -28,8 +29,48 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
         $this->queryService = $queryService;
     }
     
+    /**
+     * The events the listener is subscribed to.
+     * 
+     * @return array An array
+     */
     public function getSubscribedEvents()
     {
-        return array();
+        return array(
+            'prePersist',
+            'onFlush',
+            'loadClassMetadata'
+        );
+    }
+    
+    /**
+     * Maps additional metadata.
+     * 
+     * @param EventArgs $args The event arguments
+     */
+    public function loadClassMetadata(EventArgs $args)
+    {
+        
+    }
+
+    /**
+     * Checks for persisted object to update coordinates
+     *
+     * @param EventArgs $args The event arguments
+     */
+    public function prePersist(EventArgs $args)
+    {
+        
+    }
+
+    /**
+     * Update coordinates on objects being updated during flush
+     * if they require changing
+     *
+     * @param EventArgs $args The event arguments
+     */
+    public function onFlush(EventArgs $args)
+    {
+        
     }
 }
