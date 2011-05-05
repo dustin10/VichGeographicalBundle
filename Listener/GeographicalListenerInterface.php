@@ -11,5 +11,10 @@ use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
  */
 interface GeographicalListenerInterface
 {
+    /**
+     * Sets the query service.
+     * 
+     * @param QueryServiceInterface $queryService The query service
+     */
     function setQueryService(QueryServiceInterface $queryService);
 }

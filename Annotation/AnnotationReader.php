@@ -60,4 +60,27 @@ class AnnotationReader extends BaseAnnotationReader
         
         return $this->getClassAnnotation($class, 'Vich\GeographicalBundle\Annotation\Geographical');
     }
+    
+    public function getGeographicalQueryAnnotation(\ReflectionClass $class)
+    {
+        $this->setAnnotationCreationFunction(function($name, $values)
+        {
+            $r = new \ReflectionClass($name);
+            if (!$r->implementsInterface('Vich\GeographicalBundle\Annotation\AnnotationInterface')) {
+                return null;
+            }
+            
+            return new $name();
+        });
+        
+        foreach ($class->getMethods() as $method) {
+            $annot = $this->getMethodAnnotation($method, 'Vich\GeographicalBundle\Annotation\GeographicalQuery');
+            if ( $annot ) {
+                $annot->setMethod($method->getName());
+                return $annot;
+            }
+        }
+        
+        return null;
+    }
 }

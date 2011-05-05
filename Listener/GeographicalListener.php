@@ -3,9 +3,12 @@
 namespace Vich\GeographicalBundle\Listener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\EventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Vich\GeographicalBundle\Listener\GeographicalListenerInterface;
 use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
+use Vich\GeographicalBundle\Annotation\AnnotationReader;
+use Vich\GeographicalBundle\Annotation\Geographical;
 
 /**
  * GeographicalListener.
@@ -20,6 +23,11 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
     private $queryService;
     
     /**
+     * @var AnnotationReader $annotationReader
+     */
+    private $annotationReader;
+    
+    /**
      * Sets the query service the listener should use to query for coordinates.
      * 
      * @param QueryServiceInterface $queryService The query service
@@ -27,6 +35,16 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
     public function setQueryService(QueryServiceInterface $queryService)
     {
         $this->queryService = $queryService;
+    }
+    
+    /**
+     * Constructs a new instance of GeographicalListener.
+     * 
+     * @param AnnotationReader $annotationReader The annotation reader
+     */
+    public function __construct(AnnotationReader $annotationReader)
+    {
+        $this->annotationReader = $annotationReader;
     }
     
     /**
@@ -38,39 +56,68 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
     {
         return array(
             'prePersist',
-            'onFlush',
-            'loadClassMetadata'
+            'preUpdate'
         );
-    }
-    
-    /**
-     * Maps additional metadata.
-     * 
-     * @param EventArgs $args The event arguments
-     */
-    public function loadClassMetadata(EventArgs $args)
-    {
-        
     }
 
     /**
      * Checks for persisted object to update coordinates
      *
-     * @param EventArgs $args The event arguments
+     * @param LifecycleEventArgs $args The event arguments
      */
-    public function prePersist(EventArgs $args)
+    public function prePersist(LifecycleEventArgs $args)
     {
+        $obj = $args->getEntity();
+        $reflClass = new \ReflectionClass($obj);
+        
+        $geographical = $this->annotationReader->getGeographicalAnnotation($reflClass);
+        if ($geographical) {
+            $geographicalQuery = $this->annotationReader->getGeographicalQueryAnnotation($reflClass);
+            if ($geographicalQuery) {
+                $this->queryCoordinates($obj, $geographical, $geographicalQuery);
+            }
+        }
         
     }
 
     /**
-     * Update coordinates on objects being updated during flush
+     * Update coordinates on objects being updated before update
      * if they require changing
      *
-     * @param EventArgs $args The event arguments
+     * @param PreUpdateEventArgs $args The event arguments
      */
-    public function onFlush(EventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
+        $obj = $args->getEntity();
+        $reflClass = new \ReflectionClass($obj);
         
+        $geographical = $this->annotationReader->getGeographicalAnnotation($reflClass);
+        if ($geographical) {
+            $geographicalQuery = $this->annotationReader->getGeographicalQueryAnnotation($reflClass);
+            if ($geographicalQuery && $geographical->getOn() == Geographical::ON_UPDATE) {
+                $this->queryCoordinates($obj, $geographical, $geographicalQuery);
+            }
+        }
+    }
+    
+    /**
+     * Queries the service for coordinates.
+     * 
+     * @param Object $entity The entity
+     * @param Geographical $geographical The greographical annotation
+     * @param GeographicalQuery $geographicalQuery The geogrphical query annotation
+     */
+    private function queryCoordinates($entity, $geographical, $geographicalQuery)
+    {
+        $queryMethod = $geographicalQuery->getMethod();
+        $query = $entity->$queryMethod();
+
+        $result = $this->queryService->queryForCoordinates($query);
+        
+        $latSetter = 'set'.$geographical->getLat();
+        $lngSetter = 'set'.$geographical->getLng();
+        
+        $entity->$latSetter($result->getLatitude());
+        $entity->$lngSetter($result->getLongitude());
     }
 }

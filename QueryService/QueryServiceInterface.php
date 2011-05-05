@@ -11,6 +11,8 @@ interface QueryServiceInterface
 {
     /**
      * Query an address for coordinates.
+     * 
+     * @return QueryResult The result.
      */
     function queryForCoordinates($query);
 }
