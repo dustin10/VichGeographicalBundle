@@ -179,7 +179,7 @@ Configuring When the Coordinates are Queried
 --------------------------------------------
 
 By default the coordinates are only queried when the entity is persisted. If you 
-would like then coordinates to be queried every time the entity is updated then 
+would like the coordinates to be queried every time the entity is updated then 
 you can change the ``on`` option of the Geographical annotation to ``update``.
 
 Here is an example entity::
@@ -198,7 +198,7 @@ Overriding the Coordinate Query Service
 ---------------------------------------
 
 You can change the query service used to get the coordinates by creating your own 
-class which implements Vich\GeographicalBundle\QueryService\QueryServiceInterface. 
+class which implements ``Vich\GeographicalBundle\QueryService\QueryServiceInterface``. 
 By default Google is used.
 
 in YAML::
