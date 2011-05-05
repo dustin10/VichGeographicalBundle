@@ -92,9 +92,9 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
         $reflClass = new \ReflectionClass($obj);
         
         $geographical = $this->annotationReader->getGeographicalAnnotation($reflClass);
-        if ($geographical) {
+        if ($geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
             $geographicalQuery = $this->annotationReader->getGeographicalQueryAnnotation($reflClass);
-            if ($geographicalQuery && $geographical->getOn() == Geographical::ON_UPDATE) {
+            if ($geographicalQuery) {
                 $this->queryCoordinates($obj, $geographical, $geographicalQuery);
             }
         }

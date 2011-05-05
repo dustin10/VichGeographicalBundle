@@ -22,7 +22,8 @@ Add the `Vich` namespace to your autoloader:
 
     // app/autoload.php
     $loader->registerNamespaces(array(
-        'Vich'                       => __DIR__.'/../vendor/bundles'
+        // ..
+        'Vich' => __DIR__.'/../vendor/bundles'
     ));
 
 ### Initialize the bundle
