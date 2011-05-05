@@ -78,11 +78,17 @@ The following is a working example entity:
 
         // ..
 
+        /**
+         * Notice the latitude property must have a setter
+         */
         public function setLatitude($value)
         {
             $this->latitude = $value;
         }
-
+        
+        /**
+         * Notice the longitude property must have a setter
+         */
         public function setLongitude($value)
         {
             $this->longitude = $value;
@@ -104,4 +110,3 @@ The following is a working example entity:
             );
         }
     }
-
