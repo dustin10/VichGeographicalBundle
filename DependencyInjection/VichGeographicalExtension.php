@@ -40,7 +40,6 @@ class VichGeographicalExtension extends Extension
         $loader->load('listener.xml');
         
         $container->setParameter('vich_geographical.query_service.class', $config['class']['query_service']);
-        $container->setParameter('vich_geographical.listener.geographical.class', $config['class']['geographical_listener']);
         
         $listenerName = 'vich_geographical.listener.geographical';
         foreach ($config['orm'] as $name => $params) {
