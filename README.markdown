@@ -56,23 +56,26 @@ You will use the class annotation `@vich:Geographical` to mark the entity as
 geographical and the `@vich:GeographicalQuery` annotation to mark the method in 
 the class whose return value is used as the query to the query coordinate service. 
 The following is a working example entity:
+
+    use Doctrine\ORM\Mapping as ORM;
+    use Vich\GeographicalBundle\Annotations as Vich;
     
     /**
-     * @orm:Entity
+     * @ORM\Entity
      *
-     * @vich:Geographical
+     * @Vich\Geographical
      */
     class Location
     {
         // ..
         
         /**
-         * @orm:Column(type="decimal", scale="7")
+         * @ORM\Column(type="decimal", scale="7")
          */
         protected $latitude
 
         /**
-         * @orm:Column(type="decimal", scale="7")
+         * @ORM\Column(type="decimal", scale="7")
          */
         protected $longitude
 
@@ -95,7 +98,7 @@ The following is a working example entity:
         }
 
         /**
-         * @vich:GeographicalQuery
+         * @Vich\GeographicalQuery
          *
          * This method builds the full address to query for coordinates.
          */

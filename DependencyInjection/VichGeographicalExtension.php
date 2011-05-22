@@ -35,7 +35,6 @@ class VichGeographicalExtension extends Extension
         $config = $processor->process($configuration->getConfigTree(), $configs);
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('annotations.xml');
         $loader->load('query.xml');
         $loader->load('listener.xml');
         

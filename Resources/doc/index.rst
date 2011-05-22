@@ -68,22 +68,25 @@ return a string.
 
 Here is an example entity::
 
+    use Doctrine\ORM\Mapping as ORM;
+    use Vich\GeographicalBundle\Annotations as Vich;
+
     /**
-     * @orm:Entity
+     * @ORM\Entity
      *
-     * @vich:Geographical
+     * @Vich\Geographical
      */
     class Location
     {
         // ..
         
         /**
-         * @orm:Column(type="decimal", scale="7")
+         * @ORM\Column(type="decimal", scale="7")
          */
         protected $latitude
 
         /**
-         * @orm:Column(type="decimal", scale="7")
+         * @ORM\Column(type="decimal", scale="7")
          */
         protected $longitude
 
@@ -106,7 +109,7 @@ Here is an example entity::
         }
 
         /**
-         * @vich:GeographicalQuery
+         * @Vich\GeographicalQuery
          *
          * This method builds the full address to query for coordinates.
          */
@@ -135,22 +138,25 @@ class annotation.
 
 Here is an example::
 
+    use Doctrine\ORM\Mapping as ORM;
+    use Vich\GeographicalBundle\Annotations as Vich;
+
     /**
-     * @orm:Entity
+     * @ORM\Entity
      *
-     * @vich:Geographical(lat="mylat", lng="mylng")
+     * @Vich\Geographical(lat="mylat", lng="mylng")
      */
     class Location
     {
         // ..
         
         /**
-         * @orm:Column(type="decimal", scale="7")
+         * @ORM\Column(type="decimal", scale="7")
          */
         protected $mylat
 
         /**
-         * @orm:Column(type="decimal", scale="7")
+         * @ORM\Column(type="decimal", scale="7")
          */
         protected $mylng
 
@@ -184,10 +190,13 @@ you can change the ``on`` option of the Geographical annotation to ``update``.
 
 Here is an example entity::
 
+    use Doctrine\ORM\Mapping as ORM;
+    use Vich\GeographicalBundle\Annotations as Vich;
+
     /**
-     * @orm:Entity
+     * @ORM\Entity
      *
-     * @vich:Geographical(on="update")
+     * @Vich\Geographical(on="update")
      */
     class Location
     {

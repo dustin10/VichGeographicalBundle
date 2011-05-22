@@ -5,9 +5,8 @@ namespace Vich\GeographicalBundle\Listener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Vich\GeographicalBundle\Listener\GeographicalListenerInterface;
+use Doctrine\Common\Annotations\Reader;
 use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
-use Vich\GeographicalBundle\Annotation\AnnotationReader;
 use Vich\GeographicalBundle\Annotation\Geographical;
 
 /**
@@ -15,7 +14,7 @@ use Vich\GeographicalBundle\Annotation\Geographical;
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class GeographicalListener implements EventSubscriber, GeographicalListenerInterface
+class GeographicalListener implements EventSubscriber
 {
     /**
      * @var QueryServiceInterface $queryService
@@ -23,9 +22,9 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
     private $queryService;
     
     /**
-     * @var AnnotationReader $annotationReader
+     * @var Reader $reader
      */
-    private $annotationReader;
+    private $reader;
     
     /**
      * Sets the query service the listener should use to query for coordinates.
@@ -40,11 +39,11 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
     /**
      * Constructs a new instance of GeographicalListener.
      * 
-     * @param AnnotationReader $annotationReader The annotation reader
+     * @param Reader $reader The annotation reader
      */
-    public function __construct(AnnotationReader $annotationReader)
+    public function __construct(Reader $reader)
     {
-        $this->annotationReader = $annotationReader;
+        $this->reader = $reader;
     }
     
     /**
@@ -70,9 +69,9 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
         $obj = $args->getEntity();
         $reflClass = new \ReflectionClass($obj);
         
-        $geographical = $this->annotationReader->getGeographicalAnnotation($reflClass);
+        $geographical = $this->getGeographicalAnnotation($reflClass);
         if ($geographical) {
-            $geographicalQuery = $this->annotationReader->getGeographicalQueryAnnotation($reflClass);
+            $geographicalQuery = $this->getGeographicalQueryAnnotation($reflClass);
             if ($geographicalQuery) {
                 $this->queryCoordinates($obj, $geographical, $geographicalQuery);
             }
@@ -91,9 +90,9 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
         $obj = $args->getEntity();
         $reflClass = new \ReflectionClass($obj);
         
-        $geographical = $this->annotationReader->getGeographicalAnnotation($reflClass);
+        $geographical = $this->getGeographicalAnnotation($reflClass);
         if ($geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
-            $geographicalQuery = $this->annotationReader->getGeographicalQueryAnnotation($reflClass);
+            $geographicalQuery = $this->getGeographicalQueryAnnotation($reflClass);
             if ($geographicalQuery) {
                 $this->queryCoordinates($obj, $geographical, $geographicalQuery);
             }
@@ -119,5 +118,35 @@ class GeographicalListener implements EventSubscriber, GeographicalListenerInter
         
         $entity->$latSetter($result->getLatitude());
         $entity->$lngSetter($result->getLongitude());
+    }
+    
+    /**
+     * Gets the Geograhpical annotation for the specified class.
+     * 
+     * @param \ReflectionClass $class The class
+     * @return Geographical The geographical annotation
+     */
+    private function getGeographicalAnnotation(\ReflectionClass $refClass)
+    {
+        return $this->reader->getClassAnnotation($refClass, 'Vich\GeographicalBundle\Annotation\Geographical');
+    }
+    
+    /**
+     * Gets the GeographicalQuery annotation for the specified class.
+     * 
+     * @param \ReflectionClass $class The class
+     * @return GeographicalQuery The geographical query annotation
+     */
+    private function getGeographicalQueryAnnotation(\ReflectionClass $refClass)
+    {   
+        foreach ($refClass->getMethods() as $method) {
+            $annot = $this->reader->getMethodAnnotation($method, 'Vich\GeographicalBundle\Annotation\GeographicalQuery');
+            if ($annot) {
+                $annot->setMethod($method->getName());
+                return $annot;
+            }
+        }
+        
+        return null;
     }
 }

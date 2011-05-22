@@ -2,14 +2,12 @@
 
 namespace Vich\GeographicalBundle\Annotation;
 
-use Vich\GeographicalBundle\Annotation\AnnotationInterface;
-
 /**
  * GeographicalQuery.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class GeographicalQuery implements AnnotationInterface
+class GeographicalQuery
 {
     /**
      * @var string $method
@@ -34,5 +32,14 @@ class GeographicalQuery implements AnnotationInterface
     public function setMethod($value)
     {
         $this->method = $value;
+    }
+    
+    /**
+     * Constructs a new instance of GeographicalQuery.
+     * 
+     * @param array $values The option values
+     */
+    public function __construct(array $values) {
+        
     }
 }

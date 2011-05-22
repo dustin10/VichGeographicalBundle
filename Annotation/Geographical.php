@@ -2,14 +2,12 @@
 
 namespace Vich\GeographicalBundle\Annotation;
 
-use Vich\GeographicalBundle\Annotation\AnnotationInterface;
-
 /**
  * Geographical.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class Geographical implements AnnotationInterface
+class Geographical
 {
     const ON_CREATE = 'create';
     const ON_UPDATE = 'update';
@@ -87,5 +85,22 @@ class Geographical implements AnnotationInterface
     public function setLng($value)
     {
         $this->lng = $value;
+    }
+    
+    /**
+     * Constructs a new instance of Geographical.
+     * 
+     * @param array $values The option values
+     */
+    public function __construct(array $values) {
+        if (isset($values['on'])) {
+            $this->on = $values['on'];
+        }
+        if (isset($values['lat'])) {
+            $this->lat = $values['lat'];
+        }
+        if (isset($values['lng'])) {
+            $this->lng = $values['lng'];
+        }
     }
 }
