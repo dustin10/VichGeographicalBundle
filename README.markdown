@@ -1,9 +1,10 @@
 GeographicalBundle
 ==========
 
-The GeographicalBundle provides automatic geographic coordinate querying and 
-displaying of Google maps for the entities in your Symfony2 project using 
-annotations.
+The GeographicalBundle provides automatic geographic coordinate querying for ORM 
+entities as well as rendering of Google maps for the entities in your Symfony2 project using 
+annotations. It also allows for object oriented Google maps to be rendered without 
+using any of the coordinate querying features.
 
 See `Resources/doc/index.rst` for full documentation.
 
@@ -56,8 +57,8 @@ you should also enable them.
 
 Now you need to annotate the entites you would like to query for coordinates. 
 There are two annotations to use. You will need to use different annotations.  
-You will use the class annotation `@vich:Geographical` to mark the entity as 
-geographical and the `@vich:GeographicalQuery` annotation to mark the method in 
+You will use the class annotation `@Vich\Geographical` to mark the entity as 
+geographical and the `@Vich\GeographicalQuery` annotation to mark the method in 
 the class whose return value is used as the query to the query coordinate service. 
 The following is a working example entity:
 
