@@ -46,6 +46,16 @@ class MapHelper extends Helper
     }
     
     /**
+     * Gets the helper name.
+     * 
+     * @return string The name
+     */
+    public function getName()
+    {
+        return 'vichgeo';
+    }
+    
+    /**
      * Renders the the Map with the specified alias using the specified entities.
      * 
      * @param string $alias The Map alias
