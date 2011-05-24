@@ -11,7 +11,7 @@
     <services>
         
         <service id="vich_geographical.listener.geographical" class="%vich_geographical.listener.geographical.class%" public="false">
-            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="vich_geographical.annotation_driver" />
             <call method="setQueryService">
                 <argument type="service" id="vich_geographical.query_service" />
             </call>

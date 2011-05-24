@@ -5,7 +5,7 @@ namespace Vich\GeographicalBundle\Listener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Doctrine\Common\Annotations\Reader;
+use Vich\GeographicalBundle\Driver\AnnotationDriver;
 use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
 use Vich\GeographicalBundle\Annotation\Geographical;
 
@@ -22,9 +22,9 @@ class GeographicalListener implements EventSubscriber
     private $queryService;
     
     /**
-     * @var Reader $reader
+     * @var AnnotationDriver $reader
      */
-    private $reader;
+    private $driver;
     
     /**
      * Sets the query service the listener should use to query for coordinates.
@@ -41,9 +41,9 @@ class GeographicalListener implements EventSubscriber
      * 
      * @param Reader $reader The annotation reader
      */
-    public function __construct(Reader $reader)
+    public function __construct(AnnotationDriver $driver)
     {
-        $this->reader = $reader;
+        $this->driver = $driver;
     }
     
     /**
@@ -69,9 +69,10 @@ class GeographicalListener implements EventSubscriber
         $obj = $args->getEntity();
         $reflClass = new \ReflectionClass($obj);
         
-        $geographical = $this->getGeographicalAnnotation($reflClass);
+        $geographical = $this->driver->getGeographicalAnnotation($obj);
+
         if ($geographical) {
-            $geographicalQuery = $this->getGeographicalQueryAnnotation($reflClass);
+            $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
             if ($geographicalQuery) {
                 $this->queryCoordinates($obj, $geographical, $geographicalQuery);
             }
@@ -88,11 +89,10 @@ class GeographicalListener implements EventSubscriber
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $obj = $args->getEntity();
-        $reflClass = new \ReflectionClass($obj);
         
-        $geographical = $this->getGeographicalAnnotation($reflClass);
+        $geographical = $this->driver->getGeographicalAnnotation($obj);
         if ($geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
-            $geographicalQuery = $this->getGeographicalQueryAnnotation($reflClass);
+            $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
             if ($geographicalQuery) {
                 $this->queryCoordinates($obj, $geographical, $geographicalQuery);
             }
@@ -118,35 +118,5 @@ class GeographicalListener implements EventSubscriber
         
         $entity->$latSetter($result->getLatitude());
         $entity->$lngSetter($result->getLongitude());
-    }
-    
-    /**
-     * Gets the Geograhpical annotation for the specified class.
-     * 
-     * @param \ReflectionClass $class The class
-     * @return Geographical The geographical annotation
-     */
-    private function getGeographicalAnnotation(\ReflectionClass $refClass)
-    {
-        return $this->reader->getClassAnnotation($refClass, 'Vich\GeographicalBundle\Annotation\Geographical');
-    }
-    
-    /**
-     * Gets the GeographicalQuery annotation for the specified class.
-     * 
-     * @param \ReflectionClass $class The class
-     * @return GeographicalQuery The geographical query annotation
-     */
-    private function getGeographicalQueryAnnotation(\ReflectionClass $refClass)
-    {   
-        foreach ($refClass->getMethods() as $method) {
-            $annot = $this->reader->getMethodAnnotation($method, 'Vich\GeographicalBundle\Annotation\GeographicalQuery');
-            if ($annot) {
-                $annot->setMethod($method->getName());
-                return $annot;
-            }
-        }
-        
-        return null;
     }
 }

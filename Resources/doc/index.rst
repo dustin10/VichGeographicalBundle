@@ -28,7 +28,7 @@ Register the Vich Namespace
     ));
 
 Add GeographicalBundle to Your Application Kernel
--------------------------------------------------------
+-------------------------------------------------
 
 ::
 
@@ -125,8 +125,8 @@ Here is an example entity::
         }
     }
 
-Advanced Use
-============
+Advanced Annotation Use
+=======================
 
 Configuring the Latitude and Longitude Properties
 -------------------------------------------------
@@ -218,3 +218,140 @@ in YAML::
             default: ~
         class:
             query_service: Foo\BarBundle\QueryService\MyQueryService
+
+Twig Integration
+================
+
+The GeographicalBundle comes fully equipped with Twig functions to render your 
+geographically aware entities using Google Maps API v3. It also allows you to 
+create and render Google maps in an object oriented way without using the 
+annotation and features of the bundle for entities. Note: The Twig extensions 
+are NOT enabled by default.
+
+Enabling the Twig Extensions
+----------------------------
+
+To gain access to the Twig functions packaged with the bundle you must enable them 
+in the configuration file.
+
+in YAML::
+
+    #app/config.yml
+    vich_geographical:
+        twig:
+            enabled: true
+
+Creating a Map Class
+--------------------
+
+To display a map for your entity first you need to create a class that extends the 
+base ``Vich\GeographicalBundle\Map\Map`` class. A good namespace for your map classes 
+is ``Map``, but this is not required.
+
+::
+    // src/Vendor/MyBundle/Map/LocationMap.php
+
+    namespace Vich\GeographicalBundleExampleBundle\Map;
+
+    use Vich\GeographicalBundle\Map\Map;
+
+    /**
+     * LocationMap.
+     */
+    class LocationMap extends Map
+    {
+        /**
+         * Constructs a new instance of LocationMap.
+         */
+        public function __construct()
+        {
+            parent::__construct();
+
+            // configure your map in the constructor,
+            // i.e. $this->setAutoZoom(true);
+        }
+    }
+
+Declare the Map as a Service
+----------------------------
+
+In order for the map to be available in the Twig templates you need to declare 
+your map as a service and then tag it with the ``vichgeo.map`` tag and give it 
+an alias so that you can refer to it in the template.
+
+in XML::
+
+    # Resources/config/map.xml
+    <?xml version="1.0" encoding="UTF-8" ?>
+
+    <container xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    
+        <services>
+        
+            <service id="vich_geographical_bundle_example.map.location" class="Vich\GeographicalBundleExampleBundle\Map\LocationMap">
+                <tag name="vichgeo.map" alias="location" />
+            </service>
+        
+        </services>
+    
+    </container>
+
+Import the Map Services
+-----------------------
+
+Now that you have declared your maps as services you need to import them in the 
+``config.yml`` file of your application.
+
+in YML::
+
+    # app/config/config.yml
+    imports:
+        - { resource: "@MyBundle/Resources/config/map.xml" }
+
+Rendering a Map In Twig
+-----------------------
+
+Now that our maps have been declared as services, tagged and imported into the 
+application, we are ready to use render them.
+
+If you have not already included the google maps javascript file in your ``<head>``
+section then you can use a packaged Twig function to do it.
+
+::
+
+    {{ vichgeo_include_js() }}
+
+The ``vichgeo_map_for`` Twig function will render the map with the alias specified 
+by the first parameter and will use the entity or array of entities passed into 
+the second parameter. The function will automatically read the annotations of 
+your entities and fetch the coordinates for the marker.
+
+::
+
+    {{ vichgeo_map_for('location', location) }}
+
+If you have a preconfigured map that you would like to render that doesn't need 
+any entities specified, then you can use the ``vichgeo_map`` Twig function.
+
+::
+
+    {{ vichgeo_map('location') }}
+
+
+Verbose Configuration Reference
+===============================
+::
+
+    #app/config.yml
+    vich_geographical:
+        orm:
+            default:
+                enabled: true
+        twig:
+            enabled: true
+                
+        class:
+            query_service: Vich\GeographicalBundle\QueryService\GoogleQueryService
+            map_renderer: Vich\GeographicalBundle\Map\Renderer\MapRenderer

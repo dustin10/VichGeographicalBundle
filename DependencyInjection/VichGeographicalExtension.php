@@ -35,8 +35,11 @@ class VichGeographicalExtension extends Extension
         $config = $processor->process($configuration->getConfigTree(), $configs);
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('query.xml');
-        $loader->load('listener.xml');
+        
+        $toLoad = array('query.xml', 'services.xml', 'listener.xml');
+        foreach ($toLoad as $file) {
+            $loader->load($file);
+        }
         
         $container->setParameter('vich_geographical.query_service.class', $config['class']['query_service']);
         
@@ -49,6 +52,12 @@ class VichGeographicalExtension extends Extension
             
             $this->entityManagers[] = $name;
         }
+        
+        if ($config['twig']['enabled']) {
+            $loader->load('twig.xml');
+        }
+        
+        $container->setParameter('vich_geographical.map_renderer.class', $config['twig']['class']['map_renderer']);
     }
     
     /**

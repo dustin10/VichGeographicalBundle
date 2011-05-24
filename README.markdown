@@ -1,8 +1,9 @@
 GeographicalBundle
 ==========
 
-The GeographicalBundle provides automatic geographic coordinate querying for the 
-entities in your Symfony2 project.
+The GeographicalBundle provides automatic geographic coordinate querying and 
+displaying of Google maps for the entities in your Symfony2 project using 
+annotations.
 
 See `Resources/doc/index.rst` for full documentation.
 
@@ -41,12 +42,15 @@ To start using the bundle, register the bundle in your `AppKernel`:
 ### Configuration
 
 You have to activate the listener for each entity manager. The id is the id of 
-the DBAL connection.
+the DBAL connection. If you want to use the twig map rendering functions then 
+you should also enable them.
 
     # app/config/config.yml
     vich_geographical:
         orm:
             default: ~
+        twig:
+            enabled: true
 
 ### Annotations
 
@@ -113,3 +117,80 @@ The following is a working example entity:
             );
         }
     }
+
+## Displaying maps with Twig
+
+The Twig extensions in the GeographicalBundle make it easy to render Google maps 
+for your entities. This bundle also allows you to create a map and render it 
+without using the annotation features provided.
+
+See `Resources/doc/index.rst` for full documentation on creating maps.
+
+### Create a Map class
+
+To display a map for your entity first you need to create a class that extends the 
+base `Vich\GeographicalBundle\Map\Map` class.
+
+    namespace Vich\GeographicalBundleExampleBundle\Map;
+
+    use Vich\GeographicalBundle\Map\Map;
+
+    /**
+     * LocationMap.
+     */
+    class LocationMap extends Map
+    {
+        /**
+         * Constructs a new instance of LocationMap.
+         */
+        public function __construct()
+        {
+            parent::__construct();
+        }
+    }
+
+The example above will create a map with the default options set.
+
+Next you will need to declare your map as a service and tag it with the 
+`vichgeo.map` tag and give it an alias. Here is an XML example.
+
+    # Resources/config/map.xml
+    <?xml version="1.0" encoding="UTF-8" ?>
+
+    <container xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    
+        <services>
+        
+            <service id="vich_geographical_bundle_example.map.location" class="Vich\GeographicalBundleExampleBundle\Map\LocationMap">
+                <tag name="vichgeo.map" alias="location" />
+            </service>
+        
+        </services>
+    
+    </container>
+
+Next include the services you just defined in your config.yml file.
+
+    # app/config/config.yml
+    imports:
+        - { resource: "@MyBundle/Resources/config/map.xml" }
+
+
+Now in your Twig template you can use render the map using your annotated entity 
+or array of entities.
+
+If you have not already included the google maps javascript file in your `<head>` 
+section then you can use a Twig function to do it.
+
+    {{ vichgeo_include_js() }}
+
+Now you are ready to render the map. The `vichgeo_map_for` Twig function will render 
+the specified by for the entity or array of entities passed into the second parameter. 
+The function will automatically read the annotations of your entity and fetch the 
+location coordinates for the marker.
+
+    {{ vichgeo_map_for('location', location) }}
+
+Refer to `Resources/doc/index.rst` for full documentation.

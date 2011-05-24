@@ -5,6 +5,7 @@ namespace Vich\GeographicalBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Vich\GeographicalBundle\DependencyInjection\Compiler\ValidateExtensionConfigurationPass;
+use Vich\GeographicalBundle\DependencyInjection\Compiler\RegisterMapsPass;
 
 /**
  * VichGeographicalBundle.
@@ -18,5 +19,6 @@ class VichGeographicalBundle extends Bundle
         parent::build($container);
         
         $container->addCompilerPass(new ValidateExtensionConfigurationPass());
+        $container->addCompilerPass(new RegisterMapsPass());
     }
 }
