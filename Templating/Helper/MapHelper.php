@@ -7,13 +7,14 @@ use Vich\GeographicalBundle\Map\Map;
 use Vich\GeographicalBundle\Map\MapMarker;
 use Vich\GeographicalBundle\Map\MapProvider;
 use Vich\GeographicalBundle\Map\Renderer\MapRendererInterface;
+use Symfony\Component\Templating\Helper\Helper;
 
 /**
  * MapHelper.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class MapHelper
+class MapHelper extends Helper
 {
     /**
      * @var Vich\GeographicalBundle\Driver\AnnotationDriver $driver
