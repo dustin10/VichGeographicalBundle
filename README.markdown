@@ -146,10 +146,15 @@ base `Vich\GeographicalBundle\Map\Map` class.
         public function __construct()
         {
             parent::__construct();
+
+            // set some options
+            $this->setWidth(400);
+            $this->setHeight(250);
         }
     }
 
-The example above will create a map with the default options set.
+The example above will create a map with default options except for the width 
+and height.
 
 Next you will need to declare your map as a service and tag it with the 
 `vichgeo.map` tag and give it an alias. Here is an XML example.

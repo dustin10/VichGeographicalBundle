@@ -268,8 +268,13 @@ is ``Map``, but this is not required.
         {
             parent::__construct();
 
-            // configure your map in the constructor,
-            // i.e. $this->setAutoZoom(true);
+            // configure your map in the constructor 
+            // by setting the options
+
+            $this->setAutoZoom(true);
+            $this->setContainerId('map_canvas');
+            $this->setWidth(500);
+            $this->setHeight(350);
         }
     }
 
@@ -370,6 +375,7 @@ An example pre-configured map class::
         {
             parent::__construct();
 
+            // set some options
             $this->setAutoZoom(true);
             $this->setShowMapTypeControl(true);
             $this->setShowZoomControl(true):
