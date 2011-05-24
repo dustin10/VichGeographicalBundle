@@ -57,7 +57,7 @@ class VichGeographicalExtension extends Extension
             $loader->load('twig.xml');
         }
         
-        $container->setParameter('vich_geographical.map_renderer.class', $config['twig']['class']['map_renderer']);
+        $container->setParameter('vich_geographical.map_renderer.class', $config['class']['map_renderer']);
     }
     
     /**
