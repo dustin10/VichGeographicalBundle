@@ -1,10 +1,10 @@
-The GeographicalBundle provides automatic geographic coordinate querying for the 
-entities in your Symfony2 project.
-
 Features
 ========
 
-This bundle allows you to easily query coordinates for your entities using annotations
+The GeographicalBundle provides automatic geographic coordinate querying and 
+displaying of Google maps for the entities in your Symfony2 project using 
+annotations. It also allows for object oriented Google maps to be displayed without 
+using any of the coordinate querying features.
 
 Installation
 ============
