@@ -340,6 +340,81 @@ any entities specified, then you can use the ``vichgeo_map`` Twig function.
 
     {{ vichgeo_map('location') }}
 
+Example of a Pre-Configured Map
+===============================
+
+A pre-configured map is a map that does not use entities that are marked up with 
+the GeographicalBundle annotations. Rendering a pre-configured map is no different 
+than rendering a map for entities except for the Twig function used and how you 
+add markers to the map.
+
+An example pre-configured map class::
+
+    // src/Vendor/MyBundle/Map/LocationMap.php
+
+    namespace Vich\GeographicalBundleExampleBundle\Map;
+
+    use Vich\GeographicalBundle\Map\Map;
+    use Vich\GeographicalBundle\Map\MapMarker;
+    use Doctrine\ORM\EntityManager;
+
+    /**
+     * PreConfiguredMap.
+     */
+    class PreConfiguredMap extends Map
+    {
+        /**
+         * Constructs a new instance of LocationMap.
+         */
+        public function __construct(EntityManager $em)
+        {
+            parent::__construct();
+
+            $this->setAutoZoom(true);
+            $this->setShowMapTypeControl(true);
+            $this->setShowZoomControl(true):
+
+            // do something here with the EntityManager to get your entities
+
+            foreach ($entities as $entity) {
+                $this->addMarker(new MapMarker($entity->getLat(), $entity->getLng()));
+            }
+        }
+    }
+
+In this class, an example of injecting the EntityManager to fetch some locations 
+from the database has been used, but you can get your location info however you see 
+fit.
+
+The service definition for this map would be a little different because we have 
+injected the EntityManager into it.
+
+in XML::
+
+    # Resources/config/map.xml
+    <?xml version="1.0" encoding="UTF-8" ?>
+
+    <container xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    
+        <services>
+        
+            <service id="vich_geographical_bundle_example.map.pre_configured" class="Vich\GeographicalBundleExampleBundle\Map\PreConfiguredMap">
+                <tag name="vichgeo.map" alias="pre_configured" />
+                <argument type="service" id="doctrine.orm.entity_manager" />
+            </service>
+        
+        </services>
+    
+    </container>
+
+Instead of using ``vichgeo_map_for`` to render the map, a pre-configured map is 
+rendered with ``vichgeo_map``.
+
+::
+
+    {{ vichgeo_map('pre_configured') }}
 
 Verbose Configuration Reference
 ===============================
