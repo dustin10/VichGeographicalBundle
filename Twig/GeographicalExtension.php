@@ -12,7 +12,7 @@ use Vich\GeographicalBundle\Templating\Helper\MapHelper;
 class GeographicalExtension extends \Twig_Extension
 {   
     /**
-     * @var Vich\GeographicalBundle\Map\MapAdapter $adapter
+     * @var Vich\GeographicalBundle\Map\MapHelper $helper
      */
     private $helper;
     
