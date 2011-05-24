@@ -249,6 +249,7 @@ base ``Vich\GeographicalBundle\Map\Map`` class. A good namespace for your map cl
 is ``Map``, but this is not required.
 
 ::
+
     // src/Vendor/MyBundle/Map/LocationMap.php
 
     namespace Vich\GeographicalBundleExampleBundle\Map;
