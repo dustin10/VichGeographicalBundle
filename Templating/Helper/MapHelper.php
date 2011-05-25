@@ -64,7 +64,7 @@ class MapHelper extends Helper
      */
     public function prepareAndRender($alias, $obj)
     {
-        $map = $this->provider->getmap($alias);
+        $map = $this->provider->getMap($alias);
         
         if (!is_array($obj)) {
             $obj = array($obj);
@@ -95,7 +95,7 @@ class MapHelper extends Helper
      */
     public function render($alias)
     {
-        $map = $this->provider->getmap($alias);
+        $map = $this->provider->getMap($alias);
         
         return $this->renderer->render($map);
     }
