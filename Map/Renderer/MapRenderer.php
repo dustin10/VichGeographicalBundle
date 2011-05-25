@@ -44,7 +44,7 @@ class MapRenderer implements MapRendererInterface
      * @param Map $map The map
      * @return string The html
      */
-    private function renderContainer(Map $map)
+    protected function renderContainer(Map $map)
     {
         return sprintf('<div id="%s" style="width: %spx; height: %spx;"></div>',
             $map->getContainerId(),
@@ -58,7 +58,7 @@ class MapRenderer implements MapRendererInterface
      * 
      * @return string The html
      */
-    private function renderOpenScriptTag()
+    protected function renderOpenScriptTag()
     {
         return '<script type="text/javascript">';
     }
@@ -69,7 +69,7 @@ class MapRenderer implements MapRendererInterface
      * @param Map $map The map
      * @return type The html
      */
-    private function renderMapVar(Map $map)
+    protected function renderMapVar(Map $map)
     {
         return sprintf('var %s = new google.maps.Map(document.getElementById("%s"), %s);',
             $map->getVarName(),
@@ -85,7 +85,7 @@ class MapRenderer implements MapRendererInterface
      * @param Map $map The map
      * @return string The html
      */
-    private function renderBoundsVar(Map $map)
+    protected function renderBoundsVar(Map $map)
     {
         return sprintf('var %s = new google.maps.LatLngBounds();',
             $map->getVarName().'Bounds'
@@ -98,7 +98,7 @@ class MapRenderer implements MapRendererInterface
      * @param Map $map The map
      * @return string The html
      */
-    private function renderMarkers(Map $map)
+    protected function renderMarkers(Map $map)
     {
         $html = '';
         
@@ -128,7 +128,7 @@ class MapRenderer implements MapRendererInterface
      * @param Map $map The map
      * @return string The html
      */
-    private function setFitToBounds(Map $map)
+    protected function setFitToBounds(Map $map)
     {
         return sprintf('%s.fitBounds(%s);',
             $map->getVarName(),
@@ -142,7 +142,7 @@ class MapRenderer implements MapRendererInterface
      * @param Map $map
      * @return string The html 
      */
-    private function setMapCenter(Map $map)
+    protected function setMapCenter(Map $map)
     {
         return sprintf('%s.setCenter(new google.maps.LatLng(%s, %s));',
             $map->getVarName(),
@@ -156,7 +156,7 @@ class MapRenderer implements MapRendererInterface
      * 
      * @return string The html
      */
-    private function renderCloseScriptTag()
+    protected function renderCloseScriptTag()
     {
         return '</script>';
     }
