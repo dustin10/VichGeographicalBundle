@@ -56,6 +56,26 @@ class MapHelper extends Helper
     }
     
     /**
+     * Renders javascripts used by the map renderer.
+     * 
+     * @return string The html output
+     */
+    public function renderJavascripts()
+    {
+        return $this->renderer->renderJavascripts();
+    }
+    
+    /**
+     * Renders stylesheets used by the map renderer.
+     * 
+     * @return string The html output
+     */
+    public function renderStylesheets()
+    {
+        return $this->renderer->renderStylesheets();
+    }
+    
+    /**
      * Renders the the Map with the specified alias using the specified entities.
      * 
      * @param string $alias The Map alias

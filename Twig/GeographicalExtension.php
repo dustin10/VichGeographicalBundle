@@ -44,9 +44,10 @@ class GeographicalExtension extends \Twig_Extension
     public function getFunctions()
     {
         $names = array(
-            'vichgeo_include_js' => 'includeJavascripts',
-            'vichgeo_map'        => 'renderMap',
-            'vichgeo_map_for'    => 'renderMapWithEntities'
+            'vichgeo_include_js'  => 'includeJavascripts',
+            'vichgeo_include_css' => 'includeStylesheets',
+            'vichgeo_map'         => 'renderMap',
+            'vichgeo_map_for'     => 'renderMapWithEntities'
         );
         
         $funcs = array();
@@ -58,17 +59,23 @@ class GeographicalExtension extends \Twig_Extension
     }
     
     /**
-     * Includes the necessary javascripts for the Google Maps API.
+     * Includes the necessary javascripts for the map renderer.
      * 
      * @return string The html output
      */
     public function includeJavascripts()
     {
-        $scripts = array(
-            '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>'
-        );
-        
-        return implode('', $scripts);
+        return $this->helper->renderJavascripts();
+    }
+    
+    /**
+     * Includes the necessary stylesheets for the map renderer.
+     * 
+     * @return string The html output
+     */
+    public function includeStylesheets()
+    {
+        return $this->helper->renderStylesheets();
     }
     
     /**

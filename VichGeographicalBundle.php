@@ -14,6 +14,11 @@ use Vich\GeographicalBundle\DependencyInjection\Compiler\RegisterMapsPass;
  */
 class VichGeographicalBundle extends Bundle
 {
+    /**
+     * Builds the bundle.
+     * 
+     * @param ContainerBuilder $container The container builder
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);

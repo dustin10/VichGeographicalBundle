@@ -6,11 +6,11 @@ use Vich\GeographicalBundle\Map\Map;
 use Vich\GeographicalBundle\Map\Renderer\MapRenderer;
 
 /**
- * jQueryAwareMapRenderer.
+ * jQueryAwareGoogleMapRenderer.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class jQueryAwareMapRenderer extends MapRenderer
+class jQueryAwareGoogleMapRenderer extends MapRenderer
 {     
     /**
      * Renders the Map.

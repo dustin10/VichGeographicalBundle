@@ -2,9 +2,10 @@ Features
 ========
 
 The GeographicalBundle provides automatic geographic coordinate querying for ORM 
-entities as well as rendering of Google maps for the entities in your Symfony2 project using 
-annotations. It also allows for object oriented Google maps to be rendered without 
-using any of the coordinate querying features.
+entities as well as rendering of javascript maps for the entities in your Symfony2 project using 
+annotations. It also allows for object oriented javascript maps to be rendered without 
+using any of the coordinate querying features. The bundle uses Google maps by default, but other 
+maps are always being integrated and you can always write your own map renderer.
 
 Installation
 ============
@@ -223,8 +224,9 @@ Twig Integration
 ================
 
 The GeographicalBundle comes fully equipped with Twig functions to render your 
-geographically aware entities using Google Maps API v3. It also allows you to 
-create and render Google maps in an object oriented way without using the 
+geographically aware entities using Google Maps API v3 or any mapping service you like, 
+as the map rendering is easily overriden. It also allows you to 
+create and render maps in an object oriented way without using the 
 annotation and features of the bundle for entities. Note: The Twig extensions 
 are NOT enabled by default.
 
@@ -322,12 +324,15 @@ Rendering a Map In Twig
 Now that our maps have been declared as services, tagged and imported into the 
 application, we are ready to use render them.
 
-If you have not already included the google maps javascript file in your ``<head>``
-section then you can use a packaged Twig function to do it.
-
-::
+You can include any javascripts the map renderer needs in your ``<head>``
+section with the ``vichgeo_include_js`` Twig function.
 
     {{ vichgeo_include_js() }}
+
+If your map renderer requires any stylesheets then you can render them in your ``<head>`` 
+section by using the ``vichgeo_include_css`` function.
+
+    {{ vichgeo_include_css() }}
 
 The ``vichgeo_map_for`` Twig function will render the map with the alias specified 
 by the first parameter and will use the entity or array of entities passed into 
@@ -422,6 +427,13 @@ rendered with ``vichgeo_map``.
 
     {{ vichgeo_map('pre_configured') }}
 
+Creating Your Own Map Renderer
+==============================
+
+You can create your own map renderer by creating a class that extends 
+``Vich\GeographcialBundle\Map\Renderer\AbstractMapRenderer`` or by implementing 
+the ``Vich\GeographicalBundle\Map\Renderer\MapRendererInterface``.
+
 Verbose Configuration Reference
 ===============================
 ::
@@ -436,4 +448,7 @@ Verbose Configuration Reference
                 
         class:
             query_service: Vich\GeographicalBundle\QueryService\GoogleQueryService
-            map_renderer: Vich\GeographicalBundle\Map\Renderer\MapRenderer
+            map_renderer: Vich\GeographicalBundle\Map\Renderer\GoogleMapRenderer
+
+            # jQuery aware map renderer also available
+            # map_renderer: Vich\GeographicalBundle\Map\Renderer\jQueryAwareGoogleMapRenderer

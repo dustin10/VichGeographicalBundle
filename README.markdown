@@ -2,9 +2,10 @@ GeographicalBundle
 ==========
 
 The GeographicalBundle provides automatic geographic coordinate querying for ORM 
-entities as well as rendering of Google maps for the entities in your Symfony2 project using 
-annotations. It also allows for object oriented Google maps to be rendered without 
-using any of the coordinate querying features.
+entities as well as rendering of javascript maps for the entities in your Symfony2 project using 
+annotations. It also allows for object oriented javascript maps to be rendered without 
+using any of the coordinate querying features. The bundle uses Google maps by default, but other 
+maps are always being integrated and you can always write your own map renderer.
 
 See `Resources/doc/index.rst` for full documentation.
 
@@ -187,10 +188,15 @@ Next include the services you just defined in your config.yml file.
 Now in your Twig template you can use render the map using your annotated entity 
 or array of entities.
 
-If you have not already included the google maps javascript file in your `<head>` 
-section then you can use a Twig function to do it.
+You can include any javascripts the map renderer needs in your `<head>` 
+section with the `vichgeo_include_js` Twig function.
 
     {{ vichgeo_include_js() }}
+
+If your map renderer requires any stylesheets then you can render them in your `<head>` 
+section by using the `vichgeo_include_css` function.
+
+    {{ vichgeo_include_css() }}
 
 Now you are ready to render the map. The `vichgeo_map_for` Twig function will render 
 the specified by for the entity or array of entities passed into the second parameter. 

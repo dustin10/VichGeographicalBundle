@@ -48,7 +48,7 @@ class Configuration
                         ->end()
                         ->scalarNode('map_renderer')
                             ->cannotBeEmpty()
-                            ->defaultValue('Vich\\GeographicalBundle\\Map\\Renderer\\MapRenderer')
+                            ->defaultValue('Vich\\GeographicalBundle\\Map\\Renderer\\GoogleMapRenderer')
                         ->end()
                     ->end()
                 ->end()

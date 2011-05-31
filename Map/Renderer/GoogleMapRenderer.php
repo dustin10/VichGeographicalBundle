@@ -4,14 +4,14 @@ namespace Vich\GeographicalBundle\Map\Renderer;
 
 use Vich\GeographicalBundle\Map\Map;
 use Vich\GeographicalBundle\Map\MapMarker;
-use Vich\GeographicalBundle\Map\Renderer\MapRendererInterface;
+use Vich\GeographicalBundle\Map\Renderer\AbstractMapRenderer;
 
 /**
- * MapRenderer.
+ * GoogleMapRenderer.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class MapRenderer implements MapRendererInterface
+class GoogleMapRenderer extends AbstractMapRenderer
 {     
     /**
      * Renders the Map.
@@ -36,6 +36,20 @@ class MapRenderer implements MapRendererInterface
         $html .= $this->renderCloseScriptTag();
         
         return $html;
+    }
+    
+    /**
+     * Renders any javascripts that the renderer needs to use.
+     * 
+     * @return string The html output
+     */
+    public function renderJavascripts()
+    {
+        $scripts = array(
+            '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>'
+        );
+        
+        return implode('', $scripts);
     }
     
     /**

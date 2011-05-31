@@ -3,13 +3,14 @@
 namespace Vich\GeographicalBundle\Map\Renderer;
 
 use Vich\GeographicalBundle\Map\Map;
+use Vich\GeographicalBundle\Map\Renderer\MapRendererInterface;
 
 /**
- * MapRendererInterface.
+ * AbstractMapRenderer.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-interface MapRendererInterface
+abstract class AbstractMapRenderer implements MapRendererInterface
 {
     /**
      * Renders the Map.
@@ -17,19 +18,19 @@ interface MapRendererInterface
      * @param Vich\GeographicalBundle\Map\Map $map The map
      * @return string The html output
      */
-    public function render(Map $map);
+    public function render(Map $map) { }
     
     /**
      * Renders any javascripts that the renderer needs to use.
      * 
      * @return string The html output
      */
-    public function renderJavascripts();
+    public function renderJavascripts() { }
     
     /**
      * Renders any styelsheets that the renderer needs to use.
      * 
      * @return string The html output
      */
-    public function renderStylesheets();
+    public function renderStylesheets() { }
 }
