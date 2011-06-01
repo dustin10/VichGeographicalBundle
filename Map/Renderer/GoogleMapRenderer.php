@@ -81,7 +81,7 @@ class GoogleMapRenderer extends AbstractMapRenderer
      * Renders the map var.
      * 
      * @param Map $map The map
-     * @return type The html
+     * @return string The html
      */
     protected function renderMapVar(Map $map)
     {

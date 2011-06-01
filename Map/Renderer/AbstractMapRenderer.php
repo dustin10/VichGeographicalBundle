@@ -28,7 +28,7 @@ abstract class AbstractMapRenderer implements MapRendererInterface
     public function renderJavascripts() { }
     
     /**
-     * Renders any styelsheets that the renderer needs to use.
+     * Renders any stylesheets that the renderer needs to use.
      * 
      * @return string The html output
      */
