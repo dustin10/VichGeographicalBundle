@@ -1,5 +1,5 @@
 GeographicalBundle
-==========
+==================
 
 The GeographicalBundle provides automatic geographic coordinate querying for ORM 
 entities as well as rendering of javascript maps for the entities in your Symfony2 project using 
@@ -8,6 +8,14 @@ using any of the coordinate querying features. The bundle uses Google maps by de
 maps are always being integrated and you can always write your own map renderer.
 
 See `Resources/doc/index.rst` for full documentation.
+
+## Currently Supported Map Renderers
+
+The following is a list of currently supported map renderers. Fork this repo and 
+add antoher one!
+
+    Google Maps API v3
+    Leaflet
 
 ## Installation
 

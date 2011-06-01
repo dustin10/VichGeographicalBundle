@@ -7,6 +7,17 @@ annotations. It also allows for object oriented javascript maps to be rendered w
 using any of the coordinate querying features. The bundle uses Google maps by default, but other 
 maps are always being integrated and you can always write your own map renderer.
 
+Currently Supported Map Renderers
+=================================
+
+The following is a list of currently supported map renderers. Fork this repo and 
+add antoher one!
+
+::
+
+    Google Maps API v3
+    Leaflet
+
 Installation
 ============
 
@@ -450,5 +461,12 @@ Verbose Configuration Reference
             query_service: Vich\GeographicalBundle\QueryService\GoogleQueryService
             map_renderer: Vich\GeographicalBundle\Map\Renderer\GoogleMapRenderer
 
-            # jQuery aware map renderer also available
+            # jQuery aware google map renderer available
             # map_renderer: Vich\GeographicalBundle\Map\Renderer\jQueryAwareGoogleMapRenderer
+
+            # Leaflet map renderer available
+            # map_renderer: Vich\GeographicalBundle\Map\Renderer\LeafletMapRenderer
+
+        # if you specify the Leaflet map renderer then add your api key as follows
+        leaflet:
+            api_key: my_api_key
