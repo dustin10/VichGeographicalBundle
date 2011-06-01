@@ -128,10 +128,9 @@ class LeafletMapRenderer extends AbstractMapRenderer
      */
     protected function renderMapVar(Map $map)
     {
-        return sprintf('var %s = new L.Map("%s", %s); map.addLayer(cloudmade);',
+        return sprintf("var %s = new L.Map('%s'); map.addLayer(cloudmade);",
             $map->getVarName(),
-            $map->getContainerId(),
-            json_encode($map->getMapOptions())
+            $map->getContainerId()
         );
 
     }
