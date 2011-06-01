@@ -52,6 +52,12 @@ class Configuration
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('leaflet')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('api_key')->defaultNull()->end()
+                    ->end()
+                ->end()
             ->end()
         ;
         
