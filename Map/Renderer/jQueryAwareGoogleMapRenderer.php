@@ -3,14 +3,14 @@
 namespace Vich\GeographicalBundle\Map\Renderer;
 
 use Vich\GeographicalBundle\Map\Map;
-use Vich\GeographicalBundle\Map\Renderer\MapRenderer;
+use Vich\GeographicalBundle\Map\Renderer\GoogleMapRenderer;
 
 /**
  * jQueryAwareGoogleMapRenderer.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class jQueryAwareGoogleMapRenderer extends MapRenderer
+class jQueryAwareGoogleMapRenderer extends GoogleMapRenderer
 {     
     /**
      * Renders the Map.
