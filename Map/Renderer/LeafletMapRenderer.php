@@ -84,6 +84,7 @@ class LeafletMapRenderer extends AbstractMapRenderer
     {
         $width = is_numeric(substr($map->getWidth(), -1)) ? "{$map->getWidth()}px" : $map->getWidth();
         $height = is_numeric(substr($map->getHeight(), -1)) ? "{$map->getHeight()}px" : $map->getHeight();
+        
         return sprintf('<div id="%s" style="width: %s; height: %s;"></div>',
             $map->getContainerId(),
             $width,
@@ -112,8 +113,11 @@ class LeafletMapRenderer extends AbstractMapRenderer
         if (static::$isCloudMadeRendered) {
             return '';
         }
+        
         static::$isCloudMadeRendered = true;
+        
         $apiKey = $this->getOption('leaflet_api_key');
+        
         return sprintf("var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/%s/997/256/{z}/{x}/{y}.png', cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade', cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});",
             $apiKey
         );
@@ -159,7 +163,6 @@ class LeafletMapRenderer extends AbstractMapRenderer
         $html = '';
         
         foreach ($map->getMarkers() as $marker) {
-            /** @var \Vich\GeographicalBundle\Map\MapMarker $marker */
             $html .= sprintf('var %s = new L.Marker(new L.LatLng(%s, %s)); %s.addLayer(%s);',
                 $marker->getVarName(),
                 $marker->getCoordinate()->getLat(),
