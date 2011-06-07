@@ -57,12 +57,12 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
         $this->geographicalAnnotation
                ->expects($this->once())
                ->method('getLat')
-               ->will($this->returnValue(50));
+               ->will($this->returnValue('latitude'));
         
         $this->geographicalAnnotation
                ->expects($this->once())
                ->method('getLng')
-               ->will($this->returnValue(-50));
+               ->will($this->returnValue('longitude'));
         
         $this->reader
                ->expects($this->once())
@@ -73,8 +73,8 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
         $annot = $this->driver->getGeographicalAnnotation($this->geographicalEntity);
         
         $this->assertNotNull($annot);
-        $this->assertEquals(50, $annot->getLat());
-        $this->assertEquals(-50, $annot->getLng());
+        $this->assertEquals('latitude', $annot->getLat());
+        $this->assertEquals('longitude', $annot->getLng());
     }
     
     /**

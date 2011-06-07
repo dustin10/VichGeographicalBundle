@@ -110,7 +110,7 @@ class GeographicalListener implements EventSubscriber
     {
         $queryMethod = $geographicalQuery->getMethod();
         $query = $entity->$queryMethod();
-
+        
         $result = $this->queryService->queryForCoordinates($query);
         
         $latSetter = 'set'.$geographical->getLat();
