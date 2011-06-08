@@ -61,6 +61,7 @@ class VichGeographicalExtension extends Extension
         if (null !== $config['leaflet']['api_key']) {
             $rendererOptions['leaflet_api_key'] = $config['leaflet']['api_key'];
         }
+        
         $container->setParameter('vich_geographical.map_renderer.options', $rendererOptions);
 
         $container->setParameter('vich_geographical.map_renderer.class', $config['class']['map_renderer']);
