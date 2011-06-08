@@ -64,12 +64,12 @@ you should also enable them.
 
 ### Annotations
 
-Now you need to annotate the entites you would like to query for coordinates. 
-There are two annotations to use. You will need to use different annotations.  
-You will use the class annotation `@Vich\Geographical` to mark the entity as 
-geographical and the `@Vich\GeographicalQuery` annotation to mark the method in 
-the class whose return value is used as the query to the query coordinate service. 
-The following is a working example entity:
+Now you need to annotate the entities you would like to query for coordinates. 
+There are two annotations to use, the class annotation `@Vich\Geographical` 
+marks the entity as geographical and the `@Vich\GeographicalQuery` annotation 
+marks the method in the class whose return value is used as the query to the 
+query coordinate service (i.e. the method gets an address to turn into geographical 
+coordinates). The following is a working example entity:
 
     use Doctrine\ORM\Mapping as ORM;
     use Vich\GeographicalBundle\Annotations as Vich;
@@ -130,9 +130,9 @@ The following is a working example entity:
 
 ## Displaying maps with Twig
 
-The Twig extensions in the GeographicalBundle make it easy to render Google maps 
-for your entities. This bundle also allows you to create a map and render it 
-without using the annotation features provided.
+The Twig extensions in the GeographicalBundle make it easy to render javascript 
+maps for your entities. This bundle also allows you to create a map and render it 
+without using the coordinate querying or annotation features provided.
 
 See `Resources/doc/index.rst` for full documentation on creating maps.
 
@@ -163,10 +163,10 @@ base `Vich\GeographicalBundle\Map\Map` class.
         }
     }
 
-The example above will create a map with default options except for the width 
-and height.
+The example above will create a map with default options except for the width and 
+height which have been set.
 
-Next you will need to declare your map as a service and tag it with the 
+Next you will need to declare your map as a service, tag it with the 
 `vichgeo.map` tag and give it an alias. Here is an XML example.
 
     # Resources/config/map.xml
@@ -186,14 +186,14 @@ Next you will need to declare your map as a service and tag it with the
     
     </container>
 
-Next include the services you just defined in your config.yml file.
+Next include the services you just defined in your `config.yml` file.
 
     # app/config/config.yml
     imports:
         - { resource: "@MyBundle/Resources/config/map.xml" }
 
 
-Now in your Twig template you can use render the map using your annotated entity 
+Now in your Twig template you can render the map using your annotated entity 
 or array of entities.
 
 You can include any javascripts the map renderer needs in your `<head>` 
@@ -207,9 +207,9 @@ section by using the `vichgeo_include_css` function.
     {{ vichgeo_include_css() }}
 
 Now you are ready to render the map. The `vichgeo_map_for` Twig function will render 
-the specified by for the entity or array of entities passed into the second parameter. 
+the specified using the entity or array of entities passed into the second parameter. 
 The function will automatically read the annotations of your entity and fetch the 
-location coordinates for the marker.
+location coordinates for the map marker.
 
     {{ vichgeo_map_for('location', location) }}
 

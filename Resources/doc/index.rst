@@ -71,12 +71,12 @@ in YAML::
 Use the GeographicalBundle Annotations
 ======================================
 
-Now you need to annotate the entites you would like to query for coordinates. 
-You will need to use different annotations. Use the class annotation ``@Vich\Geographical`` 
-to mark the entity as geographical and the ``@Vich\GeographicalQuery`` annotation 
-to mark the method in the class whose return value is used as the query to the 
-query coordinate service. The method should be public and take no parameters and should 
-return a string.
+Now you need to annotate the entities you would like to query for coordinates. 
+There are two annotations to use, the class annotation `@Vich\Geographical` 
+marks the entity as geographical and the `@Vich\GeographicalQuery` annotation 
+marks the method in the class whose return value is used as the query to the 
+query coordinate service (i.e. the method gets an address to turn into geographical 
+coordinates). The following is a working example entity:
 
 Here is an example entity::
 
@@ -144,8 +144,8 @@ Configuring the Latitude and Longitude Properties
 -------------------------------------------------
 
 You can configure which properties of your entity are used to store the latitude 
-and longitude coordinates. By default the latitude property is named 'latitude' and 
-the longitude property is named 'longitude'. You can set these properties using the 
+and longitude coordinates. By default the latitude property is named ``latitude`` and 
+the longitude property is named ``longitude``. You can set these properties using the 
 class annotation.
 
 Here is an example::
@@ -348,13 +348,13 @@ section by using the ``vichgeo_include_css`` function.
 The ``vichgeo_map_for`` Twig function will render the map with the alias specified 
 by the first parameter and will use the entity or array of entities passed into 
 the second parameter. The function will automatically read the annotations of 
-your entities and fetch the coordinates for the marker.
+your entities and fetch the coordinates for the map marker.
 
 ::
 
     {{ vichgeo_map_for('location', location) }}
 
-If you have a preconfigured map that you would like to render that doesn't need 
+If you have a pre-configured map that you would like to render that doesn't need 
 any entities specified, then you can use the ``vichgeo_map`` Twig function.
 
 ::
@@ -404,7 +404,7 @@ An example pre-configured map class::
         }
     }
 
-In this class, an example of injecting the EntityManager to fetch some locations 
+In this map, an example of injecting the EntityManager to fetch some locations 
 from the database has been used, but you can get your location info however you see 
 fit.
 
