@@ -60,10 +60,16 @@ class GoogleMapRenderer extends AbstractMapRenderer
      */
     protected function renderContainer(Map $map)
     {
-        return sprintf('<div id="%s" style="width: %spx; height: %spx;"></div>',
+        $width = is_numeric(substr($map->getWidth(), -1)) ?
+            $map->getWidth() . 'px' : $map->getWidth();
+        $height = is_numeric(substr($map->getHeight(), -1)) ?
+            $map->getHeight() . 'px' : $map->getHeight();
+        
+        return sprintf(
+            '<div id="%s" style="width: %s; height: %s;"></div>',
             $map->getContainerId(),
-            $map->getWidth(),
-            $map->getHeight()
+            $width,
+            $height
         );
     }
     
@@ -85,7 +91,8 @@ class GoogleMapRenderer extends AbstractMapRenderer
      */
     protected function renderMapVar(Map $map)
     {
-        return sprintf('var %s = new google.maps.Map(document.getElementById("%s"), %s);',
+        return sprintf(
+            'var %s = new google.maps.Map(document.getElementById("%s"), %s);',
             $map->getVarName(),
             $map->getContainerId(),
             json_encode($map->getMapOptions())
@@ -100,8 +107,9 @@ class GoogleMapRenderer extends AbstractMapRenderer
      */
     protected function renderBoundsVar(Map $map)
     {
-        return sprintf('var %s = new google.maps.LatLngBounds();',
-            $map->getVarName().'Bounds'
+        return sprintf(
+            'var %s = new google.maps.LatLngBounds();',
+            $this->getBoundsVarName($map)
         );
     }
     
@@ -116,7 +124,8 @@ class GoogleMapRenderer extends AbstractMapRenderer
         $html = '';
         
         foreach ($map->getMarkers() as $marker) {
-            $html .= sprintf('var %s = new google.maps.Marker({ position: new google.maps.LatLng(%s, %s), map: %s });',
+            $html .= sprintf(
+                'var %s = new google.maps.Marker({ position: new google.maps.LatLng(%s, %s), map: %s });',
                 $marker->getVarName(),
                 $marker->getCoordinate()->getLat(),
                 $marker->getCoordinate()->getLng(),
@@ -124,8 +133,9 @@ class GoogleMapRenderer extends AbstractMapRenderer
             );
             
             if ($map->getAutoZoom()) {
-                $html .= sprintf('%s.extend(new google.maps.LatLng(%s, %s));',
-                    $map->getVarName().'Bounds',
+                $html .= sprintf(
+                    '%s.extend(new google.maps.LatLng(%s, %s));',
+                    $this->getBoundsVarName($map),
                     $marker->getCoordinate()->getLat(),
                     $marker->getCoordinate()->getLng()
                 );
@@ -143,9 +153,10 @@ class GoogleMapRenderer extends AbstractMapRenderer
      */
     protected function setFitToBounds(Map $map)
     {
-        return sprintf('%s.fitBounds(%s);',
+        return sprintf(
+            '%s.fitBounds(%s);',
             $map->getVarName(),
-            $map->getVarName().'Bounds'
+            $this->getBoundsVarName($map)
         );
     }
     
@@ -157,7 +168,8 @@ class GoogleMapRenderer extends AbstractMapRenderer
      */
     protected function setMapCenter(Map $map)
     {
-        return sprintf('%s.setCenter(new google.maps.LatLng(%s, %s));',
+        return sprintf(
+            '%s.setCenter(new google.maps.LatLng(%s, %s));',
             $map->getVarName(),
             $map->getCenter()->getLat(),
             $map->getCenter()->getLng()
@@ -172,5 +184,16 @@ class GoogleMapRenderer extends AbstractMapRenderer
     protected function renderCloseScriptTag()
     {
         return '</script>';
+    }
+    
+    /**
+     * Gets the bounds variable name for the map.
+     * 
+     * @param Map $map The map
+     * @return string The var name
+     */
+    protected function getBoundsVarName(Map $map)
+    {
+        return $map->getVarname() . 'Bounds';
     }
 }
