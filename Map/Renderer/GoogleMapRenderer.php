@@ -90,7 +90,6 @@ class GoogleMapRenderer extends AbstractMapRenderer
             $map->getContainerId(),
             json_encode($map->getMapOptions())
         );
-             
     }
     
     /**
