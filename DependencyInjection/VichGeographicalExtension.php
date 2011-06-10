@@ -58,8 +58,13 @@ class VichGeographicalExtension extends Extension
         }
 
         $rendererOptions = array();
+        
         if (null !== $config['leaflet']['api_key']) {
             $rendererOptions['leaflet_api_key'] = $config['leaflet']['api_key'];
+        }
+        
+        if (null !== $config['bing']['api_key']) {
+            $rendererOptions['bing_api_key'] = $config['bing']['api_key'];
         }
         
         $container->setParameter('vich_geographical.map_renderer.options', $rendererOptions);

@@ -15,6 +15,7 @@ The following is a list of currently supported map renderers. Fork this repo and
 add antoher one!
 
     Google Maps API v3
+    Bing Maps v7
     Leaflet
 
 ## Installation

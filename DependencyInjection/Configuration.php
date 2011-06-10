@@ -58,6 +58,12 @@ class Configuration
                         ->scalarNode('api_key')->defaultNull()->end()
                     ->end()
                 ->end()
+                ->arrayNode('bing')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('api_key')->defaultNull()->end()
+                    ->end()
+                ->end()
             ->end()
         ;
         

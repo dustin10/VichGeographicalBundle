@@ -16,6 +16,7 @@ add antoher one!
 ::
 
     Google Maps API v3
+    Bing Maps v7
     Leaflet
 
 Installation
@@ -464,9 +465,16 @@ Verbose Configuration Reference
             # jQuery aware google map renderer available
             # map_renderer: Vich\GeographicalBundle\Map\Renderer\jQueryAwareGoogleMapRenderer
 
+            # Bing map renderer available
+            # map_renderer: Vich\GeographicalBundle\Map\Renderer\BingMapRenderer
+
             # Leaflet map renderer available
             # map_renderer: Vich\GeographicalBundle\Map\Renderer\LeafletMapRenderer
 
         # if you specify the Leaflet map renderer then add your api key as follows
         leaflet:
             api_key: my_api_key
+
+        # if you specify the Bing map renderer then add your api key as follows
+        bing:
+            apk_key: my_api_key
