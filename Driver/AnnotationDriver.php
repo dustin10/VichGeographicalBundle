@@ -37,10 +37,12 @@ class AnnotationDriver
         if (!is_object($obj)) {
             throw new \InvalidArgumentException();
         }
-        
+
         $refClass = new \ReflectionClass($obj);
-        
-        return $this->reader->getClassAnnotation($refClass, 'Vich\GeographicalBundle\Annotation\Geographical');
+
+        $geoClass = ($obj instanceof \Doctrine\ORM\Proxy\Proxy) ? $refClass->getParentClass() : $refClass;
+
+        return $this->reader->getClassAnnotation($geoClass, 'Vich\GeographicalBundle\Annotation\Geographical');    
     }
     
     /**
