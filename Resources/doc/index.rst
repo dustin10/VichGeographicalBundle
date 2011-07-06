@@ -27,7 +27,7 @@ Add GeographicalBundle to the vendor/bundles/Vich/GeographicalBundle Directory
 
 ::
 
-    git submodule add git://github.com/dustin10/GeographicalBundle.git vendor/bundles/Vich/GeographicalBundle
+    git submodule add git://github.com/dustin10/VichGeographicalBundle.git vendor/bundles/Vich/GeographicalBundle
 
 Register the Vich Namespace
 ---------------------------
