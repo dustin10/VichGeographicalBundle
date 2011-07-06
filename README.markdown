@@ -26,7 +26,7 @@ To install the bundle, place it in the `vendor/bundles/Vich/GeographicalBundle`
 directory of your project. You can do this by adding the bundle as a submodule, 
 cloning it, or simply downloading the source.
 
-    git submodule add https://github.com/dustin10/GeographicalBundle.git vendor/bundles/Vich/GeographicalBundle
+    git submodule add https://github.com/dustin10/VichGeographicalBundle.git vendor/bundles/Vich/GeographicalBundle
 
 ### Add the namespace to your autoloader
 
