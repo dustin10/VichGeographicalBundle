@@ -5,6 +5,8 @@ namespace Vich\GeographicalBundle\Annotation;
 /**
  * GeographicalQuery.
  * 
+ * @Annotation
+ * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
 class GeographicalQuery
