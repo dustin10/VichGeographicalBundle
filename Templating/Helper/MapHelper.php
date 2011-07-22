@@ -130,7 +130,7 @@ class MapHelper extends Helper
     {
         $annot = $this->driver->getGeographicalAnnotation($obj);
         if (!$annot) {
-            throw new \InvalidArgumentException('Unable to find Geographical annotaion');
+            throw new \InvalidArgumentException('Unable to find Geographical annotation');
         }
         
         $latMethod = sprintf('get%s', $annot->getLat());
