@@ -94,6 +94,13 @@ class MapHelper extends Helper
             list($lat, $lng) = $this->getLatLng($entity);
             
             $marker = new MapMarker($lat, $lng);
+            $infoWindow = $this->getInfoWindow($entity);
+            if ($infoWindow)
+            {
+                //TODO: get UID from UnitOfWork
+                $marker->setVarName('marker'.$entity->getId());
+                $marker->setInfoWindow($infoWindow);
+            }
             
             $map->addMarker($marker);
         }
@@ -140,5 +147,18 @@ class MapHelper extends Helper
         $lng = $obj->$lngMethod();
         
         return array($lat, $lng);
+    }
+
+    private function getInfoWindow($obj)
+    {
+        $annot = $this->driver->getGeographicalInfoWindowAnnotation($obj);
+        if (!$annot) {
+            //InfoWindow is optional
+            return null;
+        }
+
+        $infoWindowMethod = $annot->getMethod();
+        return $obj->$infoWindowMethod();
+
     }
 }
