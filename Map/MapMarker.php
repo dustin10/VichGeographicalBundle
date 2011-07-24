@@ -25,7 +25,12 @@ class MapMarker
      * @var string $icon
      */
     private $icon;
-    
+
+    /**
+     * @var string $infoWindow
+     */
+    private $infoWindow;
+
     /**
      * Gets the javascript variable name.
      * 
@@ -84,6 +89,26 @@ class MapMarker
     public function setIcon($value)
     {
         $this->icon = $value;
+    }
+
+    /**
+     * Gets the infoWindow.
+     *
+     * @return string The icon url
+     */
+    public function getInfoWindow()
+    {
+        return $this->infoWindow;
+    }
+
+    /**
+     * Sets the infoWindow.
+     *
+     * @param string $value The icon url
+     */
+    public function setInfoWindow($value)
+    {
+        $this->infoWindow = $value;
     }
     
     /**

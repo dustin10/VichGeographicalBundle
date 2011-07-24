@@ -44,6 +44,23 @@ class AnnotationDriver
 
         return $this->reader->getClassAnnotation($geoClass, 'Vich\GeographicalBundle\Annotation\Geographical');    
     }
+
+    public function getGeographicalInfoWindowAnnotation($obj)
+    {
+        if (!is_object($obj)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $refClass = new \ReflectionClass($obj);
+
+        foreach ($refClass->getMethods() as $method) {
+            $annot = $this->reader->getMethodAnnotation($method, 'Vich\GeographicalBundle\Annotation\GeographicalInfoWindow');
+            if ($annot) {
+                $annot->setMethod($method->getName());
+                return $annot;
+            }
+        }
+    }
     
     /**
      * Gets the GeographicalQuery annotation for the specified object.
