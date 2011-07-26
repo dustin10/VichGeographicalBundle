@@ -177,6 +177,14 @@ class LeafletMapRenderer extends AbstractMapRenderer
                 $marker->getVarName()
             );
             
+            if (null !== $marker->getInfoWindow()) {
+                $html .= sprintf(
+                    '%s.bindPopup(%s);',
+                    $marker->getVarName(),
+                    $marker->getInfoWindow()->getContent()
+                );
+            }
+            
             if ($map->getAutoZoom()) {
                 $html .= sprintf(
                     '%s.extend(%s.getLatLng());',
