@@ -362,6 +362,41 @@ any entities specified, then you can use the ``vichgeo_map`` Twig function.
 
     {{ vichgeo_map('location') }}
 
+Popup Info Windows
+==================
+
+Support has been added for popup info windows when map markers are clicked. Use 
+the ``setShowInfoWindowsForMarkers`` setter of the ``Map`` class to activate or 
+deactivate (default) this feature. A default template for the content of the 
+popup has been provided, but it is strongly recommended that you create a twig/php 
+template for the popup window as the default one only displays the string 
+representation of the entity.
+
+Configure Your Template
+-----------------------
+
+In the bundle configuration, you specify which template the bundle should use to 
+generate the html content of your info window popup.
+
+in YAML::
+
+    #app/config.yml
+    vich_geographical:
+        templating:
+            info_window: MyBundle:Geographical:popup.html.twig
+
+This example configures the bundle to use the ``popup.html.twig`` template. Your 
+template will be passed the entity that the map marker represents. The template 
+variable name is ``obj``. Below is the default twig template.
+
+::
+
+    {% spaceless %}
+        <div class="vich_info_window">
+            <span>{{ obj }}</span>
+        </div>
+    {% endspaceless %}
+
 Example of a Pre-Configured Map
 ===============================
 
@@ -470,6 +505,10 @@ Verbose Configuration Reference
 
             # Leaflet map renderer available
             # map_renderer: Vich\GeographicalBundle\Map\Renderer\LeafletMapRenderer
+
+        templating:
+            engine: twig # or php
+            info_window: VichGeographicalBundle:InfoWindow:default.html.twig
 
         # if you specify the Leaflet map renderer then add your api key as follows
         leaflet:
