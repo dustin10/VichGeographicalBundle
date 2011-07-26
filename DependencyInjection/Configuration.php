@@ -67,6 +67,7 @@ class Configuration
                 ->arrayNode('templating')
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->scalarNode('engine')->defaultValue('twig')->end()
                         ->scalarNode('info_window')->defaultValue('VichGeographicalBundle:InfoWindow:default.html.twig')->end()
                     ->end()
                 ->end()
