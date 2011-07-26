@@ -141,14 +141,21 @@ class BingMapRenderer extends AbstractMapRenderer
             
             if (null !== $marker->getInfoWindow()) {
                 $html .= sprintf(
-                    'var %s = new Microsoft.Maps.Infobox(%s.getLocation(), {offset:new Microsoft.Maps.Point(-%s,%s), title:"%s", htmlContent:"%s", visible:false, width:%s, height:%s});'.
-                    'Microsoft.Maps.Events.addHandler(%s, "click", function(e) { ' .
-                    '%s.setOptions({visible:true}); }); %s.entities.push(%s);',
+                    'var %s = new Microsoft.Maps.Infobox(%s.getLocation(), {offset:new Microsoft.Maps.Point(-%s,%s), ' .
+                    'title:"%s", htmlContent:"<div style=\"padding: 10px; width: %spx; height: %spx; border-radius: 5px; ' .
+                    'border: solid 1px #777777; background-color: #FFFFFF;\"><div style=\"text-align: right; ' .
+                    'margin-bottom: 10px;\"><a href=\"#\" onclick=\"return vichGeoCloseInfobox(%s);\" style=\"font-size: 10px; ' .
+                    'color: #777777;\" id=\"vich_geo_bing_close\">X</a></div>%s</div>", visible:false, width:%s, height:%s});'.
+                    'Microsoft.Maps.Events.addHandler(%s, "click", function(e) { %s.setOptions({visible:true}); }); ' .
+                    '%s.entities.push(%s);',
                     $marker->getInfoWindow()->getVarName(),
                     $marker->getVarName(),
                     $marker->getInfoWindow()->getWidth() / 2.0,
                     $marker->getInfoWindow()->getHeight() + 50,
                     $this->escapeQuotes($marker->getInfoWindow()->getTitle()),
+                    $marker->getInfoWindow()->getWidth(),
+                    $marker->getInfoWindow()->getHeight(),
+                    $marker->getInfoWindow()->getVarName(),
                     $marker->getInfoWindow()->getContent(),
                     $marker->getInfoWindow()->getWidth(),
                     $marker->getInfoWindow()->getHeight(),
@@ -157,6 +164,8 @@ class BingMapRenderer extends AbstractMapRenderer
                     $map->getVarName(),
                     $marker->getInfoWindow()->getVarName()
                 );
+                
+                $html .= 'function vichGeoCloseInfobox(infobox) { infobox.setOptions({ visible: false }); return false; }';
             }
             
             $html .= sprintf(
