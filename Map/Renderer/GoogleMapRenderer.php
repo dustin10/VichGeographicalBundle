@@ -132,6 +132,19 @@ class GoogleMapRenderer extends AbstractMapRenderer
                 $map->getVarName()
             );
             
+            if (null !== $marker->getInfoWindow()) {
+                $html .= sprintf(
+                    'var %s = new google.maps.InfoWindow({
+                    content: "%s"}); google.maps.event.addListener(%s, "click", function (e) {%s.open (%s, %s); });',
+                    $marker->getInfoWindow()->getVarName(),
+                    $marker->getInfoWindow()->getContent(),
+                    $marker->getVarName(),
+                    $marker->getInfoWindow()->getVarName(),
+                    $map->getVarName(),
+                    $marker->getVarName()
+                );
+            }
+            
             if ($map->getAutoZoom()) {
                 $html .= sprintf(
                     '%s.extend(new google.maps.LatLng(%s, %s));',

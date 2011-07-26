@@ -7,6 +7,7 @@ use Vich\GeographicalBundle\Map\Map;
 use Vich\GeographicalBundle\Map\MapMarker;
 use Vich\GeographicalBundle\Map\MapProvider;
 use Vich\GeographicalBundle\Map\Renderer\MapRendererInterface;
+use Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilderInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**
@@ -32,17 +33,25 @@ class MapHelper extends Helper
     private $renderer;
     
     /**
+     * @var Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilderInterface $infoWindowBuilder
+     */
+    private $infoWindowBuilder;
+    
+    /**
      * Constructs a new instance of MapHelper.
      * 
      * @param Vich\GeographicalBundle\Driver\AnnotationDriver $driver The annotation driver
      * @param Vich\GeographicalBundle\Map\MapProvider $provider The provider
      * @param Vich\GeographicalBundle\Map\Renderer\MapRendererInterface Th renderer
+     * @param Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilderInterface The info window builder
      */
-    public function __construct(AnnotationDriver $driver, MapProvider $provider, MapRendererInterface $renderer)
+    public function __construct(AnnotationDriver $driver, MapProvider $provider, 
+        MapRendererInterface $renderer, MapMarkerInfoWindowBuilderInterface $infoWindowBuilder)
     {
         $this->driver = $driver;
         $this->provider = $provider;
         $this->renderer = $renderer;
+        $this->infoWindowBuilder = $infoWindowBuilder;
     }
     
     /**
@@ -94,6 +103,11 @@ class MapHelper extends Helper
             list($lat, $lng) = $this->getLatLng($entity);
             
             $marker = new MapMarker($lat, $lng);
+            
+            if ($map->getShowInfoWindowsForMarkers()) {
+                $infoWindow = $this->infoWindowBuilder->build($entity);
+                $marker->setInfoWindow($infoWindow);
+            }
             
             $map->addMarker($marker);
         }

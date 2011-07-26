@@ -3,6 +3,7 @@
 namespace Vich\GeographicalBundle\Map;
 
 use Vich\GeographicalBundle\Map\MapCoordinate;
+use Vich\GeographicalBundle\Map\MapMarkerInfoWindow;
 
 /**
  * MapMarker.
@@ -25,6 +26,11 @@ class MapMarker
      * @var string $icon
      */
     private $icon;
+    
+    /**
+     * @var Vich\GeographicalBundle\Map\MapMarkerInfoWindow $infoWindow
+     */
+    private $infoWindow;
     
     /**
      * Gets the javascript variable name.
@@ -87,6 +93,26 @@ class MapMarker
     }
     
     /**
+     * Gets the map marker's info window.
+     * 
+     * @return Vich\GeographicalBundle\Map\MapMarkerInfoWindow The info window
+     */
+    public function getInfoWindow()
+    {
+        return $this->infoWindow;
+    }
+    
+    /**
+     * Sets the map marker's info window.
+     * 
+     * @param Vich\GeographicalBundle\Map\MapMarkerInfoWindow $infoWindow The info window
+     */
+    public function setInfoWindow(MapMarkerInfoWindow $infoWindow)
+    {
+        $this->infoWindow = $infoWindow;
+    }
+    
+    /**
      * Constructs a new instance of MapMarker.
      * 
      * @param type $lat The latitude
@@ -94,10 +120,14 @@ class MapMarker
      * @param type $icon The icon url
      * @param type $varName The javascript variable name
      */
-    public function __construct($lat, $lng, $icon = null, $varName = 'mapMarker')
+    public function __construct($lat, $lng, $icon = null, $varName = '')
     {
         $this->coordinate = new MapCoordinate($lat, $lng);
         $this->icon = $icon;
+        
         $this->varName = $varName;
+        if ($this->varName === '') {
+            $this->varName = sprintf('mapMarker%s', uniqid());
+        }
     }
 }

@@ -66,6 +66,11 @@ class Map
     private $height;
     
     /**
+     * @var boolean $showInfoWindowsForMarkers
+     */
+    private $showInfoWindowsForMarkers = false;
+    
+    /**
      * Gets the map type.
      * 
      * @return string The map type
@@ -319,6 +324,26 @@ class Map
     }
     
     /**
+     * Gets whether or not the map should show info windows for the markers.
+     * 
+     * @return boolean True if show info windows, false otherwise
+     */
+    public function getShowInfoWindowsForMarkers()
+    {
+        return $this->showInfoWindowsForMarkers;
+    }
+    
+    /**
+     * Sets whether or not the map should show info windows for the markers.
+     * 
+     * @param type $value True if show info windows, false otherwise
+     */
+    public function setShowInfoWindowsForMarkers($value)
+    {
+        $this->showInfoWindowsForMarkers = $value;
+    }
+    
+    /**
      * Constructs a new instance of Map.
      * 
      * @param string $containerId The id of the container div
@@ -332,5 +357,8 @@ class Map
         $this->width = $width;
         $this->height = $height;
         $this->varName = $varName;
+        if ($this->varName === 'map') {
+            $this->varName = sprintf('map%s', uniqid());
+        }
     }
 }

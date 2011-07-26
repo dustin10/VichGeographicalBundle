@@ -22,6 +22,12 @@
             <argument type="service" id="vich_geographical.annotation_driver" />
             <argument type="service" id="vich_geographical.map_provider" />
             <argument type="service" id="vich_geographical.map_renderer" />
+            <argument type="service" id="vich_geographical.info_window_builder" />
+        </service>
+        
+        <service id="vich_geographical.info_window_builder" class="Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilder" public="false">
+            <argument type="service" id="twig" />
+            <argument>%vich_geographical.info_window.template_name%</argument>
         </service>
         
     </services>

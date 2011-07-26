@@ -64,6 +64,12 @@ class Configuration
                         ->scalarNode('api_key')->defaultNull()->end()
                     ->end()
                 ->end()
+                ->arrayNode('templating')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('info_window')->defaultValue('VichGeographicalBundle:InfoWindow:default.html.twig')->end()
+                    ->end()
+                ->end()
             ->end()
         ;
         

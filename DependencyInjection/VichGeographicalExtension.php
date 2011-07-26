@@ -56,6 +56,8 @@ class VichGeographicalExtension extends Extension
         if ($config['twig']['enabled']) {
             $loader->load('twig.xml');
         }
+        
+        $container->setParameter('vich_geographical.info_window.template_name', $config['templating']['info_window']);
 
         $rendererOptions = array();
         
