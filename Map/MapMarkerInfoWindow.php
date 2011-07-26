@@ -15,6 +15,21 @@ class MapMarkerInfoWindow
     protected $varName;
     
     /**
+     * @var integer $width
+     */
+    protected $width;
+    
+    /**
+     * @var integer $height
+     */
+    protected $height;
+    
+    /**
+     * @var string $title
+     */
+    protected $title;
+    
+    /**
      * @var string $content
      */
     protected $content;
@@ -37,6 +52,66 @@ class MapMarkerInfoWindow
     public function setVarName($value)
     {
         $this->varName = $value;
+    }
+    
+    /**
+     * Gets the info window width.
+     * 
+     * @return integer The width
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+    
+    /**
+     * Sets the info window width.
+     * 
+     * @param integer $value The width
+     */
+    public function setWidth($value)
+    {
+        $this->width = $value;
+    }
+    
+    /**
+     * Gets the info window height.
+     * 
+     * @return integer The height
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+    
+    /**
+     * Sets the info window height.
+     * 
+     * @param integer $value The height
+     */
+    public function setHeight($value)
+    {
+        $this->width = $value;
+    }
+    
+    /**
+     * Gets the info window title.
+     * 
+     * @return string The title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+    
+    /**
+     * Sets the info window title.
+     * 
+     * @param string $value The title
+     */
+    public function setTitle($value)
+    {
+        $this->title = $value;
     }
     
     /**
@@ -68,5 +143,8 @@ class MapMarkerInfoWindow
     {
         $this->content = $content;
         $this->varName = sprintf('iw%s', uniqid());
+        $this->title = '';
+        $this->width = 250;
+        $this->height = 150;
     }
 }
