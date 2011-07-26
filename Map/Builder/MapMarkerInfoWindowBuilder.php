@@ -4,7 +4,6 @@ namespace Vich\GeographicalBundle\Map\Builder;
 
 use Vich\GeographicalBundle\Map\Builder\InfoWindowBuilderInterface;
 use Vich\GeographicalBundle\Map\MapMarkerInfoWindow;
-use Symfony\Component\Templating\EngineInterface;
 
 /**
  * MapMarkerInfoWindowBuilder.
