@@ -131,11 +131,33 @@ class BingMapRenderer extends AbstractMapRenderer
         
         foreach ($map->getMarkers() as $marker) {
             $html .= sprintf(
-                '%s.entities.push(new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(%s, %s)));',
-                $map->getVarName(),
+                'var %s = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(%s, %s)); %s.entities.push(%s);',
+                $marker->getVarName(),
                 $marker->getCoordinate()->getLat(),
-                $marker->getCoordinate()->getLng()
+                $marker->getCoordinate()->getLng(),
+                $map->getVarName(),
+                $marker->getVarName()
             );
+            
+            if (null !== $marker->getInfoWindow()) {
+                $html .= sprintf(
+                    'var %s = new Microsoft.Maps.Infobox(%s.getLocation(), {offset:new Microsoft.Maps.Point(-%s,%s), title:"%s", htmlContent:"%s", visible:false, width:%s, height:%s});'.
+                    'Microsoft.Maps.Events.addHandler(%s, "click", function(e) { ' .
+                    '%s.setOptions({visible:true}); }); %s.entities.push(%s);',
+                    $marker->getInfoWindow()->getVarName(),
+                    $marker->getVarName(),
+                    $marker->getInfoWindow()->getWidth() / 2.0,
+                    $marker->getInfoWindow()->getHeight() + 50,
+                    $this->escapeQuotes($marker->getInfoWindow()->getTitle()),
+                    $marker->getInfoWindow()->getContent(),
+                    $marker->getInfoWindow()->getWidth(),
+                    $marker->getInfoWindow()->getHeight(),
+                    $marker->getVarName(),
+                    $marker->getInfoWindow()->getVarName(),
+                    $map->getVarName(),
+                    $marker->getInfoWindow()->getVarName()
+                );
+            }
             
             $html .= sprintf(
                 '%s.push(new Microsoft.Maps.Location(%s, %s));',
@@ -236,5 +258,16 @@ class BingMapRenderer extends AbstractMapRenderer
     protected function renderCloseScriptTag()
     {
         return '</script>';
+    }
+    
+    /**
+     * Escapes the quotes in a string.
+     * 
+     * @param string $text The string to escape
+     * @return string The result
+     */
+    protected function escapeQuotes($text)
+    {
+        return str_replace('"', '\"', $text);
     }
 }
