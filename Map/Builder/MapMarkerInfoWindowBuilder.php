@@ -4,6 +4,7 @@ namespace Vich\GeographicalBundle\Map\Builder;
 
 use Vich\GeographicalBundle\Map\Builder\InfoWindowBuilderInterface;
 use Vich\GeographicalBundle\Map\MapMarkerInfoWindow;
+use Symfony\Component\Templating\EngineInterface;
 
 /**
  * MapMarkerInfoWindowBuilder.
@@ -13,7 +14,7 @@ use Vich\GeographicalBundle\Map\MapMarkerInfoWindow;
 class MapMarkerInfoWindowBuilder implements MapMarkerInfoWindowBuilderInterface
 {
     /**
-     * @var Symfony\Component\Templating\EngineInterface $templating 
+     * @var object $templating 
      */
     private $templating;
     
@@ -25,7 +26,7 @@ class MapMarkerInfoWindowBuilder implements MapMarkerInfoWindowBuilderInterface
     /**
      * Constructs a new instance of MapMarkerInfoWindowBuilder.
      * 
-     * @param Symfony\Component\Templating\EngineInterface $templating The templating engine
+     * @param object $templating The templating engine
      * @param string $templateName The template name
      */
     public function __construct($templating, $templateName)
@@ -43,7 +44,7 @@ class MapMarkerInfoWindowBuilder implements MapMarkerInfoWindowBuilderInterface
         
         // escpape quotes and remove newlines and tabs
         $content = str_replace('"', '\"', $content);
-        $content = preg_replace("/[\n\r\t]/","", $content); 
+        $content = preg_replace("/[\n\r\t]/", "", $content); 
         
         return new MapMarkerInfoWindow($content);
     }
