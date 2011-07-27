@@ -25,6 +25,16 @@ Installation
 Add GeographicalBundle to the vendor/bundles/Vich/GeographicalBundle Directory
 ------------------------------------------------------------------------------
 
+Add using ``deps`` file
+
+::
+
+    [VichGeographicalBundle]
+        git=git://github.com/dustin10/VichGeographicalBundle.git
+        target=/bundles/Vich/GeographicalBundle
+
+or as a submodule
+
 ::
 
     git submodule add git://github.com/dustin10/VichGeographicalBundle.git vendor/bundles/Vich/GeographicalBundle

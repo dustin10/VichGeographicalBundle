@@ -23,8 +23,16 @@ add antoher one!
 ### Get the bundle
 
 To install the bundle, place it in the `vendor/bundles/Vich/GeographicalBundle` 
-directory of your project. You can do this by adding the bundle as a submodule, 
-cloning it, or simply downloading the source.
+directory of your project. You can do this by adding the bundle to your deps file, 
+as a submodule, cloning it, or simply downloading the source.
+
+Add to `deps` file
+
+    [VichGeographicalBundle]
+        git=git://github.com/dustin10/VichGeographicalBundle.git
+        target=/bundles/Vich/GeographicalBundle
+
+or add as a submodule
 
     git submodule add https://github.com/dustin10/VichGeographicalBundle.git vendor/bundles/Vich/GeographicalBundle
 
