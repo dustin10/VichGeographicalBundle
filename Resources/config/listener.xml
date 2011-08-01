@@ -7,7 +7,6 @@
     <services>
         
         <service id="vich_geographical.listener.geographical" class="%vich_geographical.listener.geographical.class%" public="false">
-            <tag name="doctrine.event_subscriber" />
             <call method="setAnnotationDriver">
                 <argument type="service" id="vich_geographical.annotation_driver" />
             </call>

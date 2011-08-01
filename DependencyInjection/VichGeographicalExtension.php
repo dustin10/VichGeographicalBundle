@@ -24,6 +24,11 @@ class VichGeographicalExtension extends Extension
         'mongodb' => 'Vich\GeographicalBundle\Listener\ODM\MongoDB\GeographicalListener'
     );
     
+    private $tagMap = array(
+        'orm' => 'doctrine.event_subscriber',
+        'mongodb' => 'doctrine.common.event_subscriber'
+    );
+    
     /**
      * Loads the extension.
      * 
@@ -39,6 +44,11 @@ class VichGeographicalExtension extends Extension
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         
+        $toLoad = array('query.xml', 'map.xml', 'listener.xml', 'twig.xml');
+        foreach ($toLoad as $file) {
+            $loader->load($file);
+        }
+        
         $dbDriver = strtolower($config['db_driver']);
         if (!in_array($dbDriver, array_keys($this->driverMap))) {
             throw new \InvalidArgumentException(
@@ -50,11 +60,7 @@ class VichGeographicalExtension extends Extension
         }
         
         $container->setParameter('vich_geographical.listener.geographical.class', $this->driverMap[$dbDriver]);
-        
-        $toLoad = array('query.xml', 'map.xml', 'listener.xml', 'twig.xml');
-        foreach ($toLoad as $file) {
-            $loader->load($file);
-        }
+        $container->getDefinition('vich_geographical.listener.geographical')->addTag($this->tagMap[$dbDriver]);
         
         $templateEngine = strtolower($config['templating']['engine']);
         if (!in_array($templateEngine, array('twig', 'php'))) {
