@@ -98,6 +98,10 @@ class GeographicalExtension extends \Twig_Extension
      */
     public function renderMapWithEntities($alias, $obj)
     {
+        if (empty($obj)) {
+            return $this->renderMap($alias);
+        }
+        
         return $this->helper->prepareAndRender($alias, $obj);
     }
 }
