@@ -356,6 +356,7 @@ class Map
         $this->containerId = $containerId;
         $this->width = $width;
         $this->height = $height;
+        $this->center = new MapCoordinate(48.8566, 2.3522);
         $this->varName = $varName;
         if ($this->varName === 'map') {
             $this->varName = sprintf('map%s', uniqid());
