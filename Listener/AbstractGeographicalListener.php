@@ -3,47 +3,41 @@
 namespace Vich\GeographicalBundle\Listener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Vich\GeographicalBundle\Driver\AnnotationDriver;
 use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
 use Vich\GeographicalBundle\Annotation\Geographical;
 
 /**
- * GeographicalListener.
+ * AbstractGeographicalListener.
  * 
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class GeographicalListener implements EventSubscriber
+abstract class AbstractGeographicalListener implements GeographicalListenerInterface
 {
     /**
      * @var QueryServiceInterface $queryService
      */
-    private $queryService;
+    protected $queryService;
     
     /**
      * @var AnnotationDriver $reader
      */
-    private $driver;
+    protected $driver;
     
     /**
-     * Sets the query service the listener should use to query for coordinates.
-     * 
-     * @param QueryServiceInterface $queryService The query service
+     * {@inheritDoc}
+     */
+    public function setAnnotationDriver(AnnotationDriver $driver)
+    {
+        $this->driver = $driver;
+    }
+    
+    /**
+     * {@inheritDoc}
      */
     public function setQueryService(QueryServiceInterface $queryService)
     {
         $this->queryService = $queryService;
-    }
-    
-    /**
-     * Constructs a new instance of GeographicalListener.
-     * 
-     * @param Reader $reader The annotation reader
-     */
-    public function __construct(AnnotationDriver $driver)
-    {
-        $this->driver = $driver;
     }
     
     /**
@@ -58,38 +52,30 @@ class GeographicalListener implements EventSubscriber
             'preUpdate'
         );
     }
-
+    
     /**
-     * Checks for persisted object to update coordinates
-     *
-     * @param LifecycleEventArgs $args The event arguments
+     * Updates the object on pre persist.
+     * 
+     * @param object $obj The object
      */
-    public function prePersist(LifecycleEventArgs $args)
+    protected function doPrePersist($obj)
     {
-        $obj = $args->getEntity();
-        $reflClass = new \ReflectionClass($obj);
-        
         $geographical = $this->driver->getGeographicalAnnotation($obj);
-
         if ($geographical) {
             $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
             if ($geographicalQuery) {
                 $this->queryCoordinates($obj, $geographical, $geographicalQuery);
             }
         }
-        
     }
-
+    
     /**
-     * Update coordinates on objects being updated before update
-     * if they require changing
-     *
-     * @param PreUpdateEventArgs $args The event arguments
+     * Updates the object on pre update.
+     * 
+     * @param object $obj The object
      */
-    public function preUpdate(PreUpdateEventArgs $args)
+    protected function doPreUpdate($obj)
     {
-        $obj = $args->getEntity();
-        
         $geographical = $this->driver->getGeographicalAnnotation($obj);
         if ($geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
             $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
@@ -106,7 +92,7 @@ class GeographicalListener implements EventSubscriber
      * @param Geographical $geographical The greographical annotation
      * @param GeographicalQuery $geographicalQuery The geogrphical query annotation
      */
-    private function queryCoordinates($entity, $geographical, $geographicalQuery)
+    protected function queryCoordinates($entity, $geographical, $geographicalQuery)
     {
         $queryMethod = $geographicalQuery->getMethod();
         $query = $entity->$queryMethod();

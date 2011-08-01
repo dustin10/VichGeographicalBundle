@@ -1,10 +1,10 @@
 <?php
 
-namespace Vich\GeographicalBundle\Tests\Listener;
+namespace Vich\GeographicalBundle\Tests\Listener\ORM;
 
 use Vich\GeographicalBundle\Driver\AnnotationDriver;
 use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
-use Vich\GeographicalBundle\Listener\GeographicalListener;
+use Vich\GeographicalBundle\Listener\ORM\GeographicalListener;
 use Vich\GeographicalBundle\Tests\DummyGeoEntity;
 
 /**
@@ -154,7 +154,8 @@ class GeographicalListenerTest extends \PHPUnit_Framework_TestCase
      */
     private function getListener(AnnotationDriver $driver, QueryServiceInterface $queryService)
     {
-        $listener = new GeographicalListener($driver);
+        $listener = new GeographicalListener();
+        $listener->setAnnotationDriver($driver);
         $listener->setQueryService($queryService);
         
         return $listener;

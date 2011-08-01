@@ -17,9 +17,12 @@ use Vich\GeographicalBundle\DependencyInjection\Configuration;
 class VichGeographicalExtension extends Extension
 {   
     /**
-     * @var array $entityManagers
+     * @var array $driverMap
      */
-    private $entityManagers = array();
+    private $driverMap = array(
+        'orm'     => 'Vich\GeographicalBundle\Listener\ORM\GeographicalListener',
+        'mongodb' => 'Vich\GeographicalBundle\Listener\ODM\MongoDB\GeographicalListener'
+    );
     
     /**
      * Loads the extension.
@@ -36,34 +39,38 @@ class VichGeographicalExtension extends Extension
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         
-        $toLoad = array('query.xml', 'services.xml', 'listener.xml');
+        $dbDriver = strtolower($config['db_driver']);
+        if (!in_array($dbDriver, array_keys($this->driverMap))) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Invalid "db_driver" configuration option specified: "%s"',
+                    $config['db_driver']
+                )
+            );
+        }
+        
+        $container->setParameter('vich_geographical.listener.geographical.class', $this->driverMap[$dbDriver]);
+        
+        $toLoad = array('query.xml', 'map.xml', 'listener.xml', 'twig.xml');
         foreach ($toLoad as $file) {
             $loader->load($file);
         }
         
-        $container->setParameter('vich_geographical.query_service.class', $config['class']['query_service']);
-        
-        $listenerName = 'vich_geographical.listener.geographical';
-        foreach ($config['orm'] as $name => $params) {
-            if ($params['enabled']) {
-                $definition = $container->getDefinition($listenerName);
-                $definition->addTag('doctrine.event_subscriber', array('connection' => $name));
-            }
-            
-            $this->entityManagers[] = $name;
+        $templateEngine = strtolower($config['templating']['engine']);
+        if (!in_array($templateEngine, array('twig', 'php'))) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The "templating.engine" configuration option specified: "%s"',
+                    $templateEngine
+                )
+            );
         }
         
-        if ($config['twig']['enabled']) {
-            $loader->load('twig.xml');
-        }
-        
-        $templating = sprintf('templating_%s.xml', $config['templating']['engine']);
-        $loader->load($templating);
+        $loader->load(sprintf('templating_%s.xml', $templateEngine));
         
         $container->setParameter('vich_geographical.info_window.template_name', $config['templating']['info_window']);
 
         $rendererOptions = array();
-        
         if (null !== $config['leaflet']['api_key']) {
             $rendererOptions['leaflet_api_key'] = $config['leaflet']['api_key'];
         }
@@ -72,22 +79,8 @@ class VichGeographicalExtension extends Extension
             $rendererOptions['bing_api_key'] = $config['bing']['api_key'];
         }
         
+        $container->setParameter('vich_geographical.query_service.class', $config['class']['query_service']);
         $container->setParameter('vich_geographical.map_renderer.options', $rendererOptions);
-
         $container->setParameter('vich_geographical.map_renderer.class', $config['class']['map_renderer']);
-    }
-    
-    /**
-     * Validates the DBAL configuration.
-     * 
-     * @param ContainerBuilder $container The container builder
-     */
-    public function validateConfiguration(ContainerBuilder $container)
-    {
-        foreach ($this->entityManagers as $name) {
-            if (!$container->hasDefinition(sprintf('doctrine.dbal.%s_connection', $name))) {
-                throw new \InvalidArgumentException(sprintf('Invalid %s config: DBAL connection "%s" not found', $this->getAlias(), $name));
-            }
-        }
     }
 }
