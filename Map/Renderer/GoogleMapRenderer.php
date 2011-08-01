@@ -124,11 +124,18 @@ class GoogleMapRenderer extends AbstractMapRenderer
         $html = '';
         
         foreach ($map->getMarkers() as $marker) {
+            $lat = $marker->getCoordinate()->getLat();
+            $lng = $marker->getCoordinate()->getLng();
+            
+            if (is_null($lat) || is_null($lng)) {
+                continue;
+            }
+            
             $html .= sprintf(
                 'var %s = new google.maps.Marker({ position: new google.maps.LatLng(%s, %s), map: %s });',
                 $marker->getVarName(),
-                $marker->getCoordinate()->getLat(),
-                $marker->getCoordinate()->getLng(),
+                $lat,
+                $lng,
                 $map->getVarName()
             );
             

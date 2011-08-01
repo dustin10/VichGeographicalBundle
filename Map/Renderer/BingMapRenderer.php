@@ -130,11 +130,18 @@ class BingMapRenderer extends AbstractMapRenderer
         $html = '';
         
         foreach ($map->getMarkers() as $marker) {
+            $lat = $marker->getCoordinate()->getLat();
+            $lng = $marker->getCoordinate()->getLng();
+            
+            if (is_null($lat) || is_null($lng)) {
+                continue;
+            }
+            
             $html .= sprintf(
                 'var %s = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(%s, %s)); %s.entities.push(%s);',
                 $marker->getVarName(),
-                $marker->getCoordinate()->getLat(),
-                $marker->getCoordinate()->getLng(),
+                $lat,
+                $lng,
                 $map->getVarName(),
                 $marker->getVarName()
             );
@@ -171,8 +178,8 @@ class BingMapRenderer extends AbstractMapRenderer
             $html .= sprintf(
                 '%s.push(new Microsoft.Maps.Location(%s, %s));',
                 $this->getMapPinsVarName($map),
-                $marker->getCoordinate()->getLat(),
-                $marker->getCoordinate()->getLng()
+                $lat,
+                $lng
             );
         }
         

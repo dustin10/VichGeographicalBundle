@@ -112,8 +112,10 @@ class MapHelper extends Helper
             $map->addMarker($marker);
         }
         
-        if (!$map->getCenter() && !$map->getAutoZoom() && count($obj) == 1) {
-            $map->setCenter($lat, $lng);
+        if (!$map->getAutoZoom() && count($obj) == 1) {
+            if (!is_null($lat) && !is_null($lng)) {
+                $map->setCenter($lat, $lng);
+            }
         } else {
             $map->setAutoZoom(true);
         }

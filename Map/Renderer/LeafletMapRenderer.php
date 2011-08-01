@@ -168,11 +168,18 @@ class LeafletMapRenderer extends AbstractMapRenderer
         $html = '';
         
         foreach ($map->getMarkers() as $marker) {
+            $lat = $marker->getCoordinate()->getLat();
+            $lng = $marker->getCoordinate()->getLng();
+            
+            if (is_null($lat) || is_null($lng)) {
+                continue;
+            }
+            
             $html .= sprintf(
                 'var %s = new L.Marker(new L.LatLng(%s, %s)); %s.addLayer(%s);',
                 $marker->getVarName(),
-                $marker->getCoordinate()->getLat(),
-                $marker->getCoordinate()->getLng(),
+                $lat,
+                $lng,
                 $map->getVarName(),
                 $marker->getVarName()
             );
