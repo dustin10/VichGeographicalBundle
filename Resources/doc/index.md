@@ -103,7 +103,7 @@ coordinates). The following is a working example ORM entity:
 <?php
 
 use Doctrine\ORM\Mapping as ORM;
-use Vich\GeographicalBundle\Annotations as Vich;
+use Vich\GeographicalBundle\Annotation as Vich;
 
 /**
  * @ORM\Entity
@@ -171,7 +171,7 @@ Below is an ORM example:
 <?php
 
 use Doctrine\ORM\Mapping as ORM;
-use Vich\GeographicalBundle\Annotations as Vich;
+use Vich\GeographicalBundle\Annotation as Vich;
 
 /**
  * @ORM\Entity
@@ -224,7 +224,7 @@ Below is an example ORM entity:
 <?php
 
 use Doctrine\ORM\Mapping as ORM;
-use Vich\GeographicalBundle\Annotations as Vich;
+use Vich\GeographicalBundle\Annotation as Vich;
 
 /**
  * @ORM\Entity
