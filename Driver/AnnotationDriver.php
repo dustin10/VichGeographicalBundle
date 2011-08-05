@@ -58,8 +58,10 @@ class AnnotationDriver
         }
         
         $refClass = new \ReflectionClass($obj);
+
+        $geoClass = ($obj instanceof \Doctrine\ORM\Proxy\Proxy) ? $refClass->getParentClass() : $refClass;
         
-        foreach ($refClass->getMethods() as $method) {
+        foreach ($geoClass->getMethods() as $method) {
             $annot = $this->reader->getMethodAnnotation($method, 'Vich\GeographicalBundle\Annotation\GeographicalQuery');
             if ($annot) {
                 $annot->setMethod($method->getName());
