@@ -63,7 +63,7 @@ abstract class AbstractGeographicalListener implements GeographicalListenerInter
         $geographical = $this->driver->getGeographicalAnnotation($obj);
         if ($geographical) {
             $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
-            if ($geographicalQuery) {
+            if (null !== $geographicalQuery) {
                 $this->queryCoordinates($obj, $geographical, $geographicalQuery);
             }
         }
@@ -77,9 +77,9 @@ abstract class AbstractGeographicalListener implements GeographicalListenerInter
     protected function doPreUpdate($obj)
     {
         $geographical = $this->driver->getGeographicalAnnotation($obj);
-        if ($geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
+        if (null !== $geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
             $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
-            if ($geographicalQuery) {
+            if (null !== $geographicalQuery) {
                 $this->queryCoordinates($obj, $geographical, $geographicalQuery);
             }
         }

@@ -40,9 +40,7 @@ class AnnotationDriver
 
         $refClass = new \ReflectionClass($obj);
 
-        $geoClass = ($obj instanceof \Doctrine\ORM\Proxy\Proxy) ? $refClass->getParentClass() : $refClass;
-
-        return $this->reader->getClassAnnotation($geoClass, 'Vich\GeographicalBundle\Annotation\Geographical');    
+        return $this->reader->getClassAnnotation($refClass, 'Vich\GeographicalBundle\Annotation\Geographical');    
     }
     
     /**
@@ -58,12 +56,10 @@ class AnnotationDriver
         }
         
         $refClass = new \ReflectionClass($obj);
-
-        $geoClass = ($obj instanceof \Doctrine\ORM\Proxy\Proxy) ? $refClass->getParentClass() : $refClass;
         
-        foreach ($geoClass->getMethods() as $method) {
+        foreach ($refClass->getMethods() as $method) {
             $annot = $this->reader->getMethodAnnotation($method, 'Vich\GeographicalBundle\Annotation\GeographicalQuery');
-            if ($annot) {
+            if (null !== $annot) {
                 $annot->setMethod($method->getName());
                 return $annot;
             }

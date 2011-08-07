@@ -145,7 +145,7 @@ class MapHelper extends Helper
     private function getLatLng($obj)
     {
         $annot = $this->driver->getGeographicalAnnotation($obj);
-        if (!$annot) {
+        if (null === $annot) {
             throw new \InvalidArgumentException('Unable to find Geographical annotation');
         }
         
