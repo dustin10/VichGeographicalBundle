@@ -319,6 +319,7 @@ an alias so that you can refer to it in the template.
     </services>
 
 </container>
+```
 
 ### Import the Map Services
 
@@ -328,6 +329,7 @@ Now that you have declared your maps as services you need to import them in the
 ``` yaml
 # app/config/config.yml
 imports:
+    # other imports here like security.yml and parameters.ini
     - { resource: "@MyBundle/Resources/config/map.xml" }
 ```
 
