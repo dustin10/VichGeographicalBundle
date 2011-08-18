@@ -403,7 +403,7 @@ class PreConfiguredMap extends Map
         // set some options
         $this->setAutoZoom(true);
         $this->setShowMapTypeControl(true);
-        $this->setShowZoomControl(true):
+        $this->setShowZoomControl(true);
 
         // do something here with the EntityManager to get your entities
 
