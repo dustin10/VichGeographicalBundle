@@ -5,7 +5,6 @@ namespace Vich\GeographicalBundle\Listener;
 use Doctrine\Common\EventSubscriber;
 use Vich\GeographicalBundle\Driver\AnnotationDriver;
 use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
-use Vich\GeographicalBundle\Annotation\Geographical;
 
 /**
  * AbstractGeographicalListener.
@@ -54,45 +53,13 @@ abstract class AbstractGeographicalListener implements GeographicalListenerInter
     }
     
     /**
-     * Updates the object on pre persist.
-     * 
-     * @param object $obj The object
-     */
-    protected function doPrePersist($obj)
-    {
-        $geographical = $this->driver->getGeographicalAnnotation($obj);
-        if ($geographical) {
-            $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
-            if (null !== $geographicalQuery) {
-                $this->queryCoordinates($obj, $geographical, $geographicalQuery);
-            }
-        }
-    }
-    
-    /**
-     * Updates the object on pre update.
-     * 
-     * @param object $obj The object
-     */
-    protected function doPreUpdate($obj)
-    {
-        $geographical = $this->driver->getGeographicalAnnotation($obj);
-        if (null !== $geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
-            $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
-            if (null !== $geographicalQuery) {
-                $this->queryCoordinates($obj, $geographical, $geographicalQuery);
-            }
-        }
-    }
-    
-    /**
      * Queries the service for coordinates.
      * 
      * @param Object $entity The entity
      * @param Geographical $geographical The greographical annotation
      * @param GeographicalQuery $geographicalQuery The geogrphical query annotation
      */
-    protected function queryCoordinates($entity, $geographical, $geographicalQuery)
+    protected function updateEntity($entity, $geographical, $geographicalQuery)
     {
         $queryMethod = $geographicalQuery->getMethod();
         $query = $entity->$queryMethod();

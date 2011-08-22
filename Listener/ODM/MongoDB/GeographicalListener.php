@@ -5,6 +5,7 @@ namespace Vich\GeographicalBundle\Listener\ODM\MongoDB;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 use Vich\GeographicalBundle\Listener\AbstractGeographicalListener;
+use Vich\GeographicalBundle\Annotation\Geographical;
 
 /**
  * GeographicalListener.
@@ -22,7 +23,13 @@ class GeographicalListener extends AbstractGeographicalListener
     {
         $obj = $args->getDocument();
         
-        $this->doPrePersist($obj);
+        $geographical = $this->driver->getGeographicalAnnotation($obj);
+        if ($geographical) {
+            $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
+            if (null !== $geographicalQuery) {
+                $this->updateEntity($obj, $geographical, $geographicalQuery);
+            }
+        }
     }
 
     /**
@@ -35,6 +42,17 @@ class GeographicalListener extends AbstractGeographicalListener
     {
         $obj = $args->getDocument();
         
-        $this->doPreUpdate($obj);
+        $geographical = $this->driver->getGeographicalAnnotation($obj);
+        if (null !== $geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
+            $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
+            if (null !== $geographicalQuery) {
+                $this->updateEntity($obj, $geographical, $geographicalQuery, $args);
+
+                $dm = $args->getDocumentManager();
+                $uow = $dm->getUnitOfWork();
+                $metadata = $dm->getClassMetadata(get_class($obj));
+                $uow->recomputeSingleDocumentChangeSet($metadata, $obj);
+            }
+        }
     }
 }

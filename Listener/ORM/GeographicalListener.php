@@ -5,6 +5,7 @@ namespace Vich\GeographicalBundle\Listener\ORM;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Vich\GeographicalBundle\Listener\AbstractGeographicalListener;
+use Vich\GeographicalBundle\Annotation\Geographical;
 
 /**
  * GeographicalListener.
@@ -22,8 +23,13 @@ class GeographicalListener extends AbstractGeographicalListener
     {
         $obj = $args->getEntity();
         
-        $this->doPrePersist($obj);
-        
+        $geographical = $this->driver->getGeographicalAnnotation($obj);
+        if ($geographical) {
+            $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
+            if (null !== $geographicalQuery) {
+                $this->updateEntity($obj, $geographical, $geographicalQuery);
+            }
+        }
     }
 
     /**
@@ -36,6 +42,17 @@ class GeographicalListener extends AbstractGeographicalListener
     {
         $obj = $args->getEntity();
         
-        $this->doPreUpdate($obj);
+        $geographical = $this->driver->getGeographicalAnnotation($obj);
+        if (null !== $geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
+            $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
+            if (null !== $geographicalQuery) {
+                $this->updateEntity($obj, $geographical, $geographicalQuery, $args);
+
+                $em = $args->getEntityManager();
+                $uow = $em->getUnitOfWork();
+                $metadata = $em->getClassMetadata(get_class($obj));
+                $uow->recomputeSingleEntityChangeSet($metadata, $obj);
+            }
+        }
     }
 }
