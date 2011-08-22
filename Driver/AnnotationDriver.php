@@ -27,7 +27,7 @@ class AnnotationDriver
     }
     
     /**
-     * Gets the Geograhpical annotation for the specified object.
+     * Gets the Geographical annotation for the specified object.
      * 
      * @param object $obj The object
      * @return Geographical The geographical annotation
