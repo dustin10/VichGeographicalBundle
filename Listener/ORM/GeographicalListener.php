@@ -46,7 +46,7 @@ class GeographicalListener extends AbstractGeographicalListener
         if (null !== $geographical && $geographical->getOn() === Geographical::ON_UPDATE) {
             $geographicalQuery = $this->driver->getGeographicalQueryAnnotation($obj);
             if (null !== $geographicalQuery) {
-                $this->updateEntity($obj, $geographical, $geographicalQuery, $args);
+                $this->updateEntity($obj, $geographical, $geographicalQuery);
 
                 $em = $args->getEntityManager();
                 $uow = $em->getUnitOfWork();
