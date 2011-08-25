@@ -513,5 +513,5 @@ vich_geographical:
 
     # if you specify the Bing map renderer then add your api key as follows
     bing:
-        apk_key: my_api_key
+        api_key: my_api_key
 ```
