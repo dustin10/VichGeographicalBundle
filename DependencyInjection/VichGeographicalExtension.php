@@ -86,5 +86,6 @@ class VichGeographicalExtension extends Extension
         $container->setParameter('vich_geographical.query_service.class', $config['class']['query_service']);
         $container->setParameter('vich_geographical.map_renderer.options', $rendererOptions);
         $container->setParameter('vich_geographical.map_renderer.class', $config['class']['map_renderer']);
+        $container->setParameter('vich_geographical.icon_generator.class', $config['class']['icon_generator']);
     }
 }

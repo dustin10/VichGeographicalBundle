@@ -493,7 +493,7 @@ vich_geographical:
     class:
         query_service: Vich\GeographicalBundle\QueryService\GoogleQueryService
         map_renderer: Vich\GeographicalBundle\Map\Renderer\GoogleMapRenderer
-
+        icon_generator: Vich\GeographicalBundle\Map\Generator\DefaultMapMarkerIconGenerator
         # jQuery aware google map renderer available
         # map_renderer: Vich\GeographicalBundle\Map\Renderer\jQueryAwareGoogleMapRenderer
 

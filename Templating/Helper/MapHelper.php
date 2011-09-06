@@ -8,6 +8,7 @@ use Vich\GeographicalBundle\Map\MapMarker;
 use Vich\GeographicalBundle\Map\MapProvider;
 use Vich\GeographicalBundle\Map\Renderer\MapRendererInterface;
 use Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilderInterface;
+use Vich\GeographicalBundle\Map\Generator\MapMarkerIconGeneratorInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**
@@ -38,6 +39,11 @@ class MapHelper extends Helper
     private $infoWindowBuilder;
     
     /**
+     * @var Vich\GeographicalBundle\Map\Generator\MapMarkerIconGeneratorInterface $iconGenerator
+     */
+    private $iconGenerator;
+    
+    /**
      * Constructs a new instance of MapHelper.
      * 
      * @param Vich\GeographicalBundle\Driver\AnnotationDriver $driver The annotation driver
@@ -46,12 +52,14 @@ class MapHelper extends Helper
      * @param Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilderInterface The info window builder
      */
     public function __construct(AnnotationDriver $driver, MapProvider $provider, 
-        MapRendererInterface $renderer, MapMarkerInfoWindowBuilderInterface $infoWindowBuilder)
+        MapRendererInterface $renderer, MapMarkerInfoWindowBuilderInterface $infoWindowBuilder,
+        MapMarkerIconGeneratorInterface $iconGenerator)
     {
         $this->driver = $driver;
         $this->provider = $provider;
         $this->renderer = $renderer;
         $this->infoWindowBuilder = $infoWindowBuilder;
+        $this->iconGenerator = $iconGenerator;
     }
     
     /**
@@ -107,6 +115,11 @@ class MapHelper extends Helper
             if ($map->getShowInfoWindowsForMarkers()) {
                 $infoWindow = $this->infoWindowBuilder->build($entity);
                 $marker->setInfoWindow($infoWindow);
+            }
+            
+            $iconUrl = $this->iconGenerator->generateIcon($entity);
+            if (null !== $iconUrl) {
+                $marker->setIcon($iconUrl);
             }
             
             $map->addMarker($marker);

@@ -18,11 +18,14 @@
             <argument type="service" id="service_container" />
         </service>
         
+        <service id="vich_geographical.icon_generator" class="%vich_geographical.icon_generator.class%" public="false" />
+        
         <service id="vich_geographical.map_helper" class="Vich\GeographicalBundle\Templating\Helper\MapHelper" public="false">
             <argument type="service" id="vich_geographical.annotation_driver" />
             <argument type="service" id="vich_geographical.map_provider" />
             <argument type="service" id="vich_geographical.map_renderer" />
             <argument type="service" id="vich_geographical.info_window_builder" />
+            <argument type="service" id="vich_geographical.icon_generator" />
         </service>
         
     </services>

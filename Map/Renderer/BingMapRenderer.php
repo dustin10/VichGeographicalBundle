@@ -138,13 +138,18 @@ class BingMapRenderer extends AbstractMapRenderer
             }
             
             $html .= sprintf(
-                'var %s = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(%s, %s)); %s.entities.push(%s);',
+                'var %s = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(%s, %s)%s); %s.entities.push(%s);',
                 $marker->getVarName(),
                 $lat,
                 $lng,
+                (null !== $marker->getIcon()) ? ', { icon: "' . $marker->getIcon() . '" }' : '',
                 $map->getVarName(),
                 $marker->getVarName()
             );
+            
+            if (null !== $marker->getIcon()) {
+                
+            }
             
             if (null !== $marker->getInfoWindow()) {
                 $html .= sprintf(
