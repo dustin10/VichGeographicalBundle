@@ -10,7 +10,19 @@
             <argument type="service" id="annotation_reader" />
         </service>
         
-        <service id="vich_geographical.map_renderer" class="%vich_geographical.map_renderer.class%" public="false">
+        <service id="vich_geographical.map_renderer.google" class="Vich\GeographicalBundle\Map\Renderer\GoogleMapRenderer" public="false">
+            <argument>%vich_geographical.map_renderer.options%</argument>
+        </service>
+        
+        <service id="vich_geographical.map_renderer.bing" class="Vich\GeographicalBundle\Map\Renderer\BingMapRenderer" public="false">
+            <argument>%vich_geographical.map_renderer.options%</argument>
+        </service>
+        
+        <service id="vich_geographical.map_renderer.leaflet" class="Vich\GeographicalBundle\Map\Renderer\LeafletMapRenderer" public="false">
+            <argument>%vich_geographical.map_renderer.options%</argument>
+        </service>
+        
+        <service id="vich_geographical.map_renderer.jquery_google" class="Vich\GeographicalBundle\Map\Renderer\jQueryAwareGoogleMapRenderer" public="false">
             <argument>%vich_geographical.map_renderer.options%</argument>
         </service>
 
@@ -18,7 +30,7 @@
             <argument type="service" id="service_container" />
         </service>
         
-        <service id="vich_geographical.icon_generator" class="%vich_geographical.icon_generator.class%" public="false" />
+        <service id="vich_geographical.icon_generator.default" class="Vich\GeographicalBundle\Map\Generator\DefaultMapMarkerIconGenerator" public="false" />
         
         <service id="vich_geographical.map_helper" class="Vich\GeographicalBundle\Templating\Helper\MapHelper" public="false">
             <argument type="service" id="vich_geographical.annotation_driver" />

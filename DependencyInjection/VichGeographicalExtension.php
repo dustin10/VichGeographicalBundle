@@ -83,9 +83,10 @@ class VichGeographicalExtension extends Extension
             $rendererOptions['bing_api_key'] = $config['bing']['api_key'];
         }
         
-        $container->setParameter('vich_geographical.query_service.class', $config['class']['query_service']);
+        $container->setAlias('vich_geographical.query_service', $config['query_service']);
+        $container->setAlias('vich_geographical.map_renderer', $config['map_renderer']);
+        $container->setAlias('vich_geographical.icon_generator', $config['icon_generator']);
+        
         $container->setParameter('vich_geographical.map_renderer.options', $rendererOptions);
-        $container->setParameter('vich_geographical.map_renderer.class', $config['class']['map_renderer']);
-        $container->setParameter('vich_geographical.icon_generator.class', $config['class']['icon_generator']);
     }
 }

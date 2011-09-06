@@ -489,19 +489,18 @@ Verbose Configuration Reference
 #app/config.yml
 vich_geographical:
     db_driver: ~ # You must configure this option
+    query_service: vich_geographical.query_service.default
+    map_renderer: vich_geographical.map_renderer.google
+    icon_generator: vich_geographical.icon_generator.default
 
-    class:
-        query_service: Vich\GeographicalBundle\QueryService\GoogleQueryService
-        map_renderer: Vich\GeographicalBundle\Map\Renderer\GoogleMapRenderer
-        icon_generator: Vich\GeographicalBundle\Map\Generator\DefaultMapMarkerIconGenerator
-        # jQuery aware google map renderer available
-        # map_renderer: Vich\GeographicalBundle\Map\Renderer\jQueryAwareGoogleMapRenderer
+    # jQuery aware google map renderer available
+    # map_renderer: vich_geographical.map_renderer.jquery_google
 
-        # Bing map renderer available
-        # map_renderer: Vich\GeographicalBundle\Map\Renderer\BingMapRenderer
+    # Bing map renderer available
+    # map_renderer: vich_geographical.map_renderer.bing
 
-        # Leaflet map renderer available
-        # map_renderer: Vich\GeographicalBundle\Map\Renderer\LeafletMapRenderer
+    # Leaflet map renderer available
+    # map_renderer: vich_geographical.map_renderer.leaflet
 
     templating:
         engine: twig # or php
