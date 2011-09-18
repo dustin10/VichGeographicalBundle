@@ -240,14 +240,14 @@ class Location
 
 You can change the query service used to get the coordinates by creating your own 
 class which implements ``Vich\GeographicalBundle\QueryService\QueryServiceInterface``. 
-By default Google is used.
+By default Google is used. You can then define your class as as service and then 
+configure that service using the `query_service` configuration parameter.
 
 ``` yaml
 # app/config.yml
 vich_geographical:
     # ...
-    class:
-        query_service: Foo\BarBundle\QueryService\MyQueryService
+    query_service: my_custom_service    
 ```
 
 Twig Integration
@@ -440,8 +440,8 @@ injected the EntityManager into it.
 
 </container>
 ```
-Instead of using ``vichgeo_map_for`` to render the map, a pre-configured map is 
-rendered with ``vichgeo_map``.
+Instead of using `vichgeo_map_for` to render the map, a pre-configured map is 
+rendered with `vichgeo_map`.
 
 ``` twig
 {{ vichgeo_map('pre_configured') }}
