@@ -102,8 +102,7 @@ class MapHelper extends Helper
     public function prepareAndRender($alias, $obj)
     {
         $map = $this->provider->getMap($alias);
-        
-        if (!is_array($obj)) {
+        if (!is_array($obj) && !($obj instanceof \IteratorAggregate)) {
             $obj = array($obj);
         }
         

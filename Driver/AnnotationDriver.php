@@ -38,8 +38,8 @@ class AnnotationDriver
             throw new \InvalidArgumentException();
         }
 
-        $refClass = new \ReflectionClass($obj);
-
+        $refClass = $this->resolveProxy($obj);
+        
         return $this->reader->getClassAnnotation($refClass, 'Vich\GeographicalBundle\Annotation\Geographical');    
     }
     
@@ -66,5 +66,24 @@ class AnnotationDriver
         }
         
         return null;
+    }
+    
+    /**
+     * Tests an object to see if it is a proxy, if so return the \ReflectionClass 
+     * object representing its parent.
+     * 
+     * @param type $obj The object to test
+     * @return \ReflectionClass The reflection class
+     */
+    protected function resolveProxy($obj)
+    {
+        // this needs to be refactored as there is a chance that 'Proxies' is not 
+        // the configured namespace, but will work for now...
+        $refClass = new \ReflectionClass($obj);
+        if (false !== strpos($refClass->getName(), 'Proxies\\')) {
+            $refClass = new \ReflectionClass(get_parent_class($obj));
+        }
+        
+        return $refClass;
     }
 }
