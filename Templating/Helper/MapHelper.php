@@ -109,6 +109,10 @@ class MapHelper extends Helper
         foreach ($obj as $entity) {
             list($lat, $lng) = $this->getLatLng($entity);
             
+            if (($lat == 0 && $lng == 0) || is_null($lat) || is_null($lng)) {
+                continue;
+            }
+            
             $marker = new MapMarker($lat, $lng);
             
             if ($map->getShowInfoWindowsForMarkers()) {
@@ -125,9 +129,7 @@ class MapHelper extends Helper
         }
         
         if (!$map->getAutoZoom() && count($obj) == 1) {
-            if (!is_null($lat) && !is_null($lng)) {
-                $map->setCenter($lat, $lng);
-            }
+            $map->setCenter($lat, $lng);
         } else {
             $map->setAutoZoom(true);
         }
