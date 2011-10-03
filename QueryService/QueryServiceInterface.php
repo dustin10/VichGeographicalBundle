@@ -14,5 +14,5 @@ interface QueryServiceInterface
      * 
      * @return QueryResult The result.
      */
-    function queryForCoordinates($query);
+    function queryCoordinates($query);
 }

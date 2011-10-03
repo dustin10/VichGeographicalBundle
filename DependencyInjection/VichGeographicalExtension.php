@@ -16,13 +16,16 @@ use Vich\GeographicalBundle\DependencyInjection\Configuration;
 class VichGeographicalExtension extends Extension
 {   
     /**
-     * @var array $driverMap
+     * @var array $adapterMap
      */
-    private $driverMap = array(
-        'orm'     => 'Vich\GeographicalBundle\Listener\ORM\GeographicalListener',
-        'mongodb' => 'Vich\GeographicalBundle\Listener\ODM\MongoDB\GeographicalListener'
+    private $adapterMap = array(
+        'orm' => 'Vich\GeographicalBundle\Adapter\ORM\DoctrineORMAdapter',
+        'mongodb' => 'Vich\GeographicalBundle\Adapter\ODM\MongoDB\MongoDBAdapter'
     );
     
+    /**
+     * @var array $tagMap
+     */
     private $tagMap = array(
         'orm' => 'doctrine.event_subscriber',
         'mongodb' => 'doctrine.common.event_subscriber'
@@ -42,13 +45,13 @@ class VichGeographicalExtension extends Extension
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         
-        $toLoad = array('query.xml', 'map.xml', 'listener.xml', 'twig.xml');
+        $toLoad = array('query.xml', 'map.xml', 'listener.xml', 'twig.xml', 'adapter.xml', 'templating.xml');
         foreach ($toLoad as $file) {
             $loader->load($file);
         }
         
         $dbDriver = strtolower($config['db_driver']);
-        if (!in_array($dbDriver, array_keys($this->driverMap))) {
+        if (!in_array($dbDriver, array_keys($this->tagMap))) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Invalid "db_driver" configuration option specified: "%s"',
@@ -57,7 +60,7 @@ class VichGeographicalExtension extends Extension
             );
         }
         
-        $container->setParameter('vich_geographical.listener.geographical.class', $this->driverMap[$dbDriver]);
+        $container->setParameter('vich_geographical.adapter.class', $this->adapterMap[$dbDriver]);
         $container->getDefinition('vich_geographical.listener.geographical')->addTag($this->tagMap[$dbDriver]);
         
         $templateEngine = strtolower($config['templating']['engine']);

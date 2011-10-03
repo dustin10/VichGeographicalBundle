@@ -17,7 +17,7 @@ class GoogleQueryService implements QueryServiceInterface
      * 
      * @param QueryResult $query The query
      */
-    public function queryForCoordinates($query)
+    public function queryCoordinates($query)
     {
         $result = new QueryResult();
         

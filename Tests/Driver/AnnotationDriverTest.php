@@ -50,7 +50,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * Test the getGeographicalAnnotation method of the AnnotationDriver.
+     * Test the readGeoAnnotation method of the AnnotationDriver.
      */
     public function testGetGeographicalAnnotation()
     {
@@ -70,7 +70,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
                ->with($this->isInstanceOf('\ReflectionClass'), $this->equalTo('Vich\GeographicalBundle\Annotation\Geographical'))
                ->will($this->returnValue($this->geographicalAnnotation));
         
-        $annot = $this->driver->getGeographicalAnnotation($this->geographicalEntity);
+        $annot = $this->driver->readGeoAnnotation($this->geographicalEntity);
         
         $this->assertNotNull($annot);
         $this->assertEquals('latitude', $annot->getLat());
@@ -78,9 +78,9 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * Test the getGeographicalQueryAnnotation method of the AnnotationDriver.
+     * Test the readGeoQueryAnnotation method of the AnnotationDriver.
      */
-    public function testGetGeographicalQueryAnnotation()
+    public function testReadGeoQueryAnnotation()
     {
         $this->geographicalQueryAnnotation
                ->expects($this->once())
@@ -93,7 +93,7 @@ class AnnotationDriverTest extends \PHPUnit_Framework_TestCase
                ->with($this->isInstanceOf('\ReflectionMethod'), $this->equalTo('Vich\GeographicalBundle\Annotation\GeographicalQuery'))
                ->will($this->returnValue($this->geographicalQueryAnnotation));
         
-        $annot = $this->driver->getGeographicalQueryAnnotation($this->geographicalEntity);
+        $annot = $this->driver->readGeoQueryAnnotation($this->geographicalEntity);
         
         $this->assertNotNull($annot);
         $this->assertEquals('getAddress', $annot->getMethod());

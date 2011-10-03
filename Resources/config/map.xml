@@ -3,11 +3,19 @@
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+        
+    <parameters>
+        <parameter key="vich_geographical.annotation.geographical.class">Vich\GeographicalBundle\Annotation\Geographical</parameter>
+        <parameter key="vich_geographical.annotation.geographical_query.class">Vich\GeographicalBundle\Annotation\GeographicalQuery</parameter>
+    </parameters>
     
     <services>
         
         <service id="vich_geographical.annotation_driver" class="Vich\GeographicalBundle\Driver\AnnotationDriver" public="false">
             <argument type="service" id="annotation_reader" />
+            <argument type="service" id="vich_geographical.adapter" />
+            <argument>%vich_geographical.annotation.geographical.class%</argument>
+            <argument>%vich_geographical.annotation.geographical_query.class%</argument>
         </service>
         
         <service id="vich_geographical.map_renderer.google" class="Vich\GeographicalBundle\Map\Renderer\GoogleMapRenderer" public="false">
@@ -26,19 +34,11 @@
             <argument>%vich_geographical.map_renderer.options%</argument>
         </service>
 
-        <service id="vich_geographical.map_provider" class="Vich\GeographicalBundle\Map\MapProvider" public="false">
+        <service id="vich_geographical.map_provider" class="Vich\GeographicalBundle\Map\Provider\MapProvider" public="false">
             <argument type="service" id="service_container" />
         </service>
         
-        <service id="vich_geographical.icon_generator.default" class="Vich\GeographicalBundle\Map\Generator\DefaultMapMarkerIconGenerator" public="false" />
-        
-        <service id="vich_geographical.map_helper" class="Vich\GeographicalBundle\Templating\Helper\MapHelper" public="false">
-            <argument type="service" id="vich_geographical.annotation_driver" />
-            <argument type="service" id="vich_geographical.map_provider" />
-            <argument type="service" id="vich_geographical.map_renderer" />
-            <argument type="service" id="vich_geographical.info_window_builder" />
-            <argument type="service" id="vich_geographical.icon_generator" />
-        </service>
+        <service id="vich_geographical.icon_generator.default" class="Vich\GeographicalBundle\Map\Marker\Icon\DefaultIconGenerator" public="false" />
         
     </services>
         

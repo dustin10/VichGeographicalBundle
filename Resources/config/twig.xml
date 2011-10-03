@@ -6,9 +6,9 @@
     
     <services>
         
-        <service id="vich_geographical.twig.extension" class="Vich\GeographicalBundle\Twig\GeographicalExtension" public="false">
+        <service id="vich_geographical.twig.extension" class="Vich\GeographicalBundle\Twig\Extension\GeographicalExtension" public="false">
             <tag name="twig.extension" />
-            <argument type="service" id="vich_geographical.map_helper" />
+            <argument type="service" id="vich_geographical.templating.helper.map_helper" />
         </service>
         
     </services>

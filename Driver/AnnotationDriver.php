@@ -3,6 +3,7 @@
 namespace Vich\GeographicalBundle\Driver;
 
 use Doctrine\Common\Annotations\Reader;
+use Vich\GeographicalBundle\Adapter\AdapterInterface;
 
 /**
  * AnnotationDriver.
@@ -14,16 +15,37 @@ class AnnotationDriver
     /**
      * @var Reader $reader
      */
-    private $reader;
+    protected $reader;
+    
+    /**
+     * @var AdapterInterface $adapter
+     */
+    protected $adapter;
+    
+    /**
+     * @var string $geoClass
+     */
+    protected $geoClass;
+    
+    /**
+     * @var string $geoQueryClass
+     */
+    protected $geoQueryClass;
     
     /**
      * Constructs a new intsance of AnnotationDriver.
      * 
      * @param Reader $reader The annotation reader
+     * @param AdapterInterface $apapter The adapter
+     * @param string $geoClass The geographical annotaion class name
+     * @param string $geoQueryClass The geographical query annotaion class name
      */
-    public function __construct(Reader $reader)
+    public function __construct(Reader $reader, AdapterInterface $adapter, $geoClass, $geoQueryClass)
     {
         $this->reader = $reader;
+        $this->adapter = $adapter;
+        $this->geoClass = $geoClass;
+        $this->geoQueryClass = $geoQueryClass;
     }
     
     /**
@@ -32,15 +54,15 @@ class AnnotationDriver
      * @param object $obj The object
      * @return Geographical The geographical annotation
      */
-    public function getGeographicalAnnotation($obj)
+    public function readGeoAnnotation($obj)
     {   
         if (!is_object($obj)) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException('The variable is not an object.');
         }
 
         $refClass = $this->resolveProxy($obj);
         
-        return $this->reader->getClassAnnotation($refClass, 'Vich\GeographicalBundle\Annotation\Geographical');    
+        return $this->reader->getClassAnnotation($refClass, $this->geoClass);    
     }
     
     /**
@@ -49,7 +71,7 @@ class AnnotationDriver
      * @param object $obj The object
      * @return GeographicalQuery The geographical query annotation
      */
-    public function getGeographicalQueryAnnotation($obj)
+    public function readGeoQueryAnnotation($obj)
     {   
         if (!is_object($obj)) {
             throw new \InvalidArgumentException();
@@ -58,7 +80,7 @@ class AnnotationDriver
         $refClass = new \ReflectionClass($obj);
         
         foreach ($refClass->getMethods() as $method) {
-            $annot = $this->reader->getMethodAnnotation($method, 'Vich\GeographicalBundle\Annotation\GeographicalQuery');
+            $annot = $this->reader->getMethodAnnotation($method, $this->geoQueryClass);
             if (null !== $annot) {
                 $annot->setMethod($method->getName());
                 return $annot;
@@ -72,18 +94,15 @@ class AnnotationDriver
      * Tests an object to see if it is a proxy, if so return the \ReflectionClass 
      * object representing its parent.
      * 
-     * @param type $obj The object to test
+     * @param object $obj The object to test
      * @return \ReflectionClass The reflection class
      */
     protected function resolveProxy($obj)
     {
-        // this needs to be refactored as there is a chance that 'Proxies' is not 
-        // the configured namespace, but will work for now...
-        $refClass = new \ReflectionClass($obj);
-        if (false !== strpos($refClass->getName(), 'Proxies\\')) {
-            $refClass = new \ReflectionClass(get_parent_class($obj));
+        if ($this->adapter->isProxy($obj)) {
+            return new \ReflectionClass(get_parent_class($obj));
         }
         
-        return $refClass;
+        return $refClass = new \ReflectionClass($obj);
     }
 }

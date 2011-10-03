@@ -6,10 +6,7 @@
     
     <services>
         
-        <service id="vich_geographical.info_window_builder" class="Vich\GeographicalBundle\Map\Marker\InfoWindow\InfoWindowRenderer" public="false">
-            <argument type="service" id="twig" />
-            <argument>%vich_geographical.info_window.template_name%</argument>
-        </service>
+        <service id="vich_geographical.adapter" class="%vich_geographical.adapter.class%" public="false" />
         
     </services>
         

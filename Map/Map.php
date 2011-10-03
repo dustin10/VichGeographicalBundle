@@ -2,8 +2,8 @@
 
 namespace Vich\GeographicalBundle\Map;
 
-use Vich\GeographicalBundle\Map\MapCoordinate;
-use Vich\GeographicalBundle\Map\MapMarker;
+use Vich\GeographicalBundle\Map\Coordinate\MapCoordinate;
+use Vich\GeographicalBundle\Map\Marker\MapMarker;
 use Vich\GeographicalBundle\Map\Renderer\MapRendererInterface;
 use Vich\GeographicalBundle\Map\Renderer\MapRenderer;
 
@@ -30,7 +30,7 @@ class Map
     );
     
     /**
-     * @var Vich\GeographicalBundle\Map\MapCoordinate $center
+     * @var MapCoordinate $center
      */
     private $center = null;
     

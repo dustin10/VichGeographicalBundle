@@ -6,13 +6,10 @@
     
     <services>
         
-        <service id="vich_geographical.listener.geographical" class="%vich_geographical.listener.geographical.class%" public="false">
-            <call method="setAnnotationDriver">
-                <argument type="service" id="vich_geographical.annotation_driver" />
-            </call>
-            <call method="setQueryService">
-                <argument type="service" id="vich_geographical.query_service" />
-            </call>
+        <service id="vich_geographical.listener.geographical" class="Vich\GeographicalBundle\EventListener\GeographicalListener" public="false">
+            <argument type="service" id="vich_geographical.query_service" />
+            <argument type="service" id="vich_geographical.annotation_driver" />
+            <argument type="service" id="vich_geographical.adapter" />
         </service>
         
     </services>

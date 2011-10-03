@@ -4,11 +4,11 @@ namespace Vich\GeographicalBundle\Templating\Helper;
 
 use Vich\GeographicalBundle\Driver\AnnotationDriver;
 use Vich\GeographicalBundle\Map\Map;
-use Vich\GeographicalBundle\Map\MapMarker;
-use Vich\GeographicalBundle\Map\MapProvider;
+use Vich\GeographicalBundle\Map\Marker\MapMarker;
+use Vich\GeographicalBundle\Map\Provider\MapProvider;
 use Vich\GeographicalBundle\Map\Renderer\MapRendererInterface;
-use Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilderInterface;
-use Vich\GeographicalBundle\Map\Generator\MapMarkerIconGeneratorInterface;
+use Vich\GeographicalBundle\Map\Marker\InfoWindow\InfoWindowRendererInterface;
+use Vich\GeographicalBundle\Map\Marker\Icon\IconGeneratorInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**
@@ -19,41 +19,42 @@ use Symfony\Component\Templating\Helper\Helper;
 class MapHelper extends Helper
 {
     /**
-     * @var Vich\GeographicalBundle\Driver\AnnotationDriver $driver
+     * @var AnnotationDriver $driver
      */
     private $driver;
     
     /**
-     * @var Vich\GeographicalBundle\Map\MapProvider $provider
+     * @var MapProvider $provider
      */
     private $provider;
     
     /**
-     * @var Vich\GeographicalBundle\Map\MapRendererInterface $renderer
+     * @var MapRendererInterface $renderer
      */
     private $renderer;
     
     /**
-     * @var Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilderInterface $infoWindowBuilder
+     * @var InfoWindowBuilderInterface $infoWindowBuilder
      */
     private $infoWindowBuilder;
     
     /**
-     * @var Vich\GeographicalBundle\Map\Generator\MapMarkerIconGeneratorInterface $iconGenerator
+     * @var IconGeneratorInterface $iconGenerator
      */
     private $iconGenerator;
     
     /**
      * Constructs a new instance of MapHelper.
      * 
-     * @param Vich\GeographicalBundle\Driver\AnnotationDriver $driver The annotation driver
-     * @param Vich\GeographicalBundle\Map\MapProvider $provider The provider
-     * @param Vich\GeographicalBundle\Map\Renderer\MapRendererInterface Th renderer
-     * @param Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilderInterface The info window builder
+     * @param AnnotationDriver $driver The annotation driver
+     * @param MapProvider $provider The provider
+     * @param MapRendererInterface Th renderer
+     * @param InfoWindowBuilderInterface The info window renderer
+     * @param IconGeneratorInterface $iconGenerator The marker icon url generator
      */
     public function __construct(AnnotationDriver $driver, MapProvider $provider, 
-        MapRendererInterface $renderer, MapMarkerInfoWindowBuilderInterface $infoWindowBuilder,
-        MapMarkerIconGeneratorInterface $iconGenerator)
+        MapRendererInterface $renderer, InfoWindowRendererInterface $infoWindowBuilder,
+        IconGeneratorInterface $iconGenerator)
     {
         $this->driver = $driver;
         $this->provider = $provider;
@@ -69,7 +70,7 @@ class MapHelper extends Helper
      */
     public function getName()
     {
-        return 'vichgeo';
+        return 'vich_geographical';
     }
     
     /**
@@ -156,11 +157,11 @@ class MapHelper extends Helper
      * @param type $obj The object
      * @return array An array
      */
-    private function getLatLng($obj)
+    protected function getLatLng($obj)
     {
-        $annot = $this->driver->getGeographicalAnnotation($obj);
+        $annot = $this->driver->readGeoAnnotation($obj);
         if (null === $annot) {
-            throw new \InvalidArgumentException('Unable to find Geographical annotation');
+            throw new \InvalidArgumentException('Unable to find Geographical annotation.');
         }
         
         $latMethod = sprintf('get%s', $annot->getLat());

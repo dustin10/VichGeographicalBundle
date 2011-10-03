@@ -6,7 +6,7 @@
     
     <services>
         
-        <service id="vich_geographical.info_window_builder" class="Vich\GeographicalBundle\Map\Builder\MapMarkerInfoWindowBuilder" public="false">
+        <service id="vich_geographical.info_window_builder" class="Vich\GeographicalBundle\Map\Marker\InfoWindow\InfoWindowRenderer" public="false">
             <argument type="service" id="templating.engine.php" />
             <argument>%vich_geographical.info_window.template_name%</argument>
         </service>

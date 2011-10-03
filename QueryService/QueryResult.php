@@ -12,12 +12,12 @@ class QueryResult
     /**
      * @var double $latitude
      */
-    private $latitude = 0;
+    protected $latitude = 0;
     
     /**
      * @var double $longitude
      */
-    private $longitude = 0;
+    protected $longitude = 0;
     
     /**
      * Gets the latitude.
