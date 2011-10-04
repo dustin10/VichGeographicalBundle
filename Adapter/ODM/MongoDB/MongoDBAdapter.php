@@ -24,7 +24,7 @@ class MongoDBAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function invokeChangesetRecompute(EventArgs $e)
+    public function recomputeChangeSet(EventArgs $e)
     {
         $obj = $this->getObjectFromArgs($e);
         

@@ -121,7 +121,7 @@ class GeographicalListener implements EventSubscriber
         $obj->$lngSetter($result->getLongitude());
         
         if ($isUpdate) {
-            $this->adapter->invokeChangesetRecompute($eventArgs);
+            $this->adapter->recomputeChangeSet($eventArgs);
         }
     }
     

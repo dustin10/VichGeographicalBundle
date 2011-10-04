@@ -20,11 +20,11 @@ interface AdapterInterface
     function getObjectFromArgs(EventArgs $e);
     
     /**
-     * Notifies the ORM layer that a recompute of the entities changeset is necessary.
+     * Recomputes the change set for the object.
      * 
      * @param EventArgs $e The event arguments.
      */
-    function invokeChangesetRecompute(EventArgs $e);
+    function recomputeChangeSet(EventArgs $e);
     
     /**
      * Determines if the specified object is a proxy.
