@@ -93,11 +93,12 @@ VichGeographicalBundle Annotations
 ==================================
 
 Now you need to annotate the entities or documents you would like to query for coordinates. 
-There are two annotations to use, the class annotation `@Vich\Geographical` 
-marks the entity as geographical and the `@Vich\GeographicalQuery` annotation 
+There are two annotations to use, the class annotation `@Geographical` 
+marks the entity as geographical and the `@GeographicalQuery` annotation 
 marks the method in the class whose return value is used as the query to the 
-query coordinate service (i.e. the method gets an address to turn into geographical 
-coordinates). The following is a working example ORM entity:
+coordinate querying service (i.e. the method returns an address string which the 
+coordinate query service will turn into geographical coordinates). The following 
+is a working example ORM entity:
 
 ``` php
 <?php
@@ -107,7 +108,6 @@ use Vich\GeographicalBundle\Annotation as Vich;
 
 /**
  * @ORM\Entity
- *
  * @Vich\Geographical
  */
 class Location
@@ -239,7 +239,7 @@ class Location
 ## Overriding the Coordinate Query Service
 
 You can change the query service used to get the coordinates by creating your own 
-class which implements ``Vich\GeographicalBundle\QueryService\QueryServiceInterface``. 
+class which implements `Vich\GeographicalBundle\QueryService\QueryServiceInterface`. 
 By default Google is used. You can then define your class as as service and then 
 configure that service using the `query_service` configuration parameter.
 
@@ -253,7 +253,7 @@ vich_geographical:
 Twig Integration
 ================
 
-The VichGeographicalBundle comes fully equipped with Twig functions to render your 
+The `VichGeographicalBundle` comes fully equipped with Twig functions to render your 
 geographically aware entities using several JavaScript map rendering APIs or any 
 mapping service you prefer. It also allows you to create and render maps in an 
 object oriented way without using the annotation and features of the bundle for 
@@ -266,10 +266,10 @@ base `Vich\GeographicalBundle\Map\Map` class. A good namespace for your map clas
 is `Map`, but this is not required.
 
 ``` php
-// src/Vendor/MyBundle/Map/LocationMap.php
+// src/Acme/DemoBundle/Map/LocationMap.php
 <?php
 
-namespace Vich\GeographicalBundleExampleBundle\Map;
+namespace Acme\DemoBundle\Map;
 
 use Vich\GeographicalBundle\Map\Map;
 
@@ -303,7 +303,7 @@ your map as a service and then tag it with the `vichgeo.map` tag and give it
 an alias so that you can refer to it in the template.
 
 ``` xml
-<!-- Resources/config/map.xml -->
+<!-- src/Acme/DemoBundle/Resources/config/map.xml -->
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
@@ -312,7 +312,7 @@ an alias so that you can refer to it in the template.
 
     <services>
 
-        <service id="vich_geographical_bundle_example.map.location" class="Vich\GeographicalBundleExampleBundle\Map\LocationMap">
+        <service id="acme_dmeo.map.location" class="Acme\DemoBundle\Map\LocationMap">
             <tag name="vichgeo.map" alias="location" />
         </service>
 
@@ -330,13 +330,13 @@ Now that you have declared your maps as services you need to import them in the
 # app/config/config.yml
 imports:
     # other imports here like security.yml and parameters.ini
-    - { resource: "@MyBundle/Resources/config/map.xml" }
+    - { resource: "@AcmeDemoBundle/Resources/config/map.xml" }
 ```
 
 ### Rendering a Map In Twig
 
 Now that our maps have been declared as services, tagged and imported into the 
-application, we are ready to use render them.
+application, we are ready to render them.
 
 You can include any javascripts the map renderer needs in your `<head>`
 section with the `vichgeo_include_js` Twig function.
@@ -379,13 +379,13 @@ add markers to the map.
 An example pre-configured map class:
 
 ``` php
-// src/Vendor/MyBundle/Map/LocationMap.php
+// src/Acme/DemoBundle/Map/LocationMap.php
 <?php
 
-namespace Vich\GeographicalBundleExampleBundle\Map;
+namespace Vich\DemoBundle\Map;
 
 use Vich\GeographicalBundle\Map\Map;
-use Vich\GeographicalBundle\Map\MapMarker;
+use Vich\GeographicalBundle\Map\Marker\MapMarker;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -394,7 +394,9 @@ use Doctrine\ORM\EntityManager;
 class PreConfiguredMap extends Map
 {
     /**
-     * Constructs a new instance of LocationMap.
+     * Constructs a new instance of PreConfiguredMap.
+     *
+     * @param EntityManager $em The entity manager.
      */
     public function __construct(EntityManager $em)
     {
@@ -422,7 +424,7 @@ The service definition for this map would be a little different because we have
 injected the EntityManager into it.
 
 ``` xml
-<!-- Resources/config/map.xml -->
+<!-- src/Acme/DemoBundle/Resources/config/map.xml -->
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
@@ -431,7 +433,7 @@ injected the EntityManager into it.
 
     <services>
 
-        <service id="vich_geographical_bundle_example.map.pre_configured" class="Vich\GeographicalBundleExampleBundle\Map\PreConfiguredMap">
+        <service id="acme_demo.map.pre_configured" class="Acme\DemoBundle\Map\PreConfiguredMap">
             <tag name="vichgeo.map" alias="pre_configured" />
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
@@ -450,7 +452,7 @@ rendered with `vichgeo_map`.
 Popup Info Windows
 ==================
 
-Support has been added for popup info windows when map markers are clicked. Use 
+The bundle supports popup info windows when map markers are clicked. Use 
 the `setShowInfoWindowsForMarkers` setter of the `Map` class to activate or 
 deactivate (default) this feature. A default template for the content of the 
 popup has been provided, but it is strongly recommended that you create a twig/php 
@@ -467,10 +469,10 @@ generate the html content of your info window popup.
 vich_geographical:
     # ...
     templating:
-        info_window: MyBundle:Geographical:popup.html.twig
+        info_window: AcmeDemoBundle:Map:infoWindow.html.twig
 ```
 
-This example configures the bundle to use the `popup.html.twig` template. Your 
+This example configures the bundle to use the `infoWindow.html.twig` template. Your 
 template will be passed the entity that the map marker represents. The template 
 variable name is `obj`. Below is the default twig template.
 
