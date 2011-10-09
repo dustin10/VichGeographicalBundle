@@ -5,6 +5,7 @@ namespace Vich\GeographicalBundle\EventListener;
 use Vich\GeographicalBundle\Driver\AnnotationDriver;
 use Vich\GeographicalBundle\QueryService\QueryServiceInterface;
 use Vich\GeographicalBundle\Adapter\AdapterInterface;
+use Vich\GeographicalBundle\Annotation\Geographical;
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventSubscriber;
 
@@ -132,7 +133,7 @@ class GeographicalListener implements EventSubscriber
      * @param Geographical $annot The Geographical annotation.
      * @return boolean True if should query, false otherwise.
      */
-    protected function shouldQueryOnUpdate(Geographical $annot)
+    protected function shouldQueryOnUpdate(Geographical $annot = null)
     {
         return (null !== $annot) && ($annot->getOn() === Geographical::ON_UPDATE);
     }
