@@ -103,6 +103,6 @@ class AnnotationDriver
             return new \ReflectionClass(get_parent_class($obj));
         }
         
-        return $refClass = new \ReflectionClass($obj);
+        return new \ReflectionClass($obj);
     }
 }
