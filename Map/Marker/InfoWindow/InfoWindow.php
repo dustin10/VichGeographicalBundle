@@ -131,6 +131,10 @@ class InfoWindow
      */
     public function setContent($value)
     {
+        // escpape quotes and remove newlines and tabs
+        $value = str_replace('"', '\"', $value);
+        $value = preg_replace("/[\n\r\t]/", "", $value); 
+        
         $this->content = $value;
     }
     
@@ -141,10 +145,11 @@ class InfoWindow
      */
     public function __construct($content = '')
     {
-        $this->content = $content;
         $this->varName = sprintf('iw%s', uniqid());
         $this->title = '';
         $this->width = 250;
         $this->height = 150;
+        
+        $this->setContent($content);
     }
 }

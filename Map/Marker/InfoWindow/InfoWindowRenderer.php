@@ -41,10 +41,6 @@ class InfoWindowRenderer implements InfoWindowRendererInterface
     {
         $content = $this->templating->render($this->templateName, array('obj' => $obj));
         
-        // escpape quotes and remove newlines and tabs
-        $content = str_replace('"', '\"', $content);
-        $content = preg_replace("/[\n\r\t]/", "", $content); 
-        
         return new InfoWindow($content);
     }
 }
