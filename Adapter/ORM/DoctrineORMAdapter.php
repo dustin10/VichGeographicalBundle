@@ -28,7 +28,7 @@ class DoctrineORMAdapter implements AdapterInterface
     {
         $obj = $this->getObjectFromArgs($e);
         
-        $em = $args->getEntityManager();
+        $em = $e->getEntityManager();
         $uow = $em->getUnitOfWork();
         $metadata = $em->getClassMetadata(get_class($obj));
         $uow->recomputeSingleEntityChangeSet($metadata, $obj);
