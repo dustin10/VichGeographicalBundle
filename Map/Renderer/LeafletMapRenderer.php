@@ -8,7 +8,7 @@ use Vich\GeographicalBundle\Map\Renderer\AbstractMapRenderer;
 
 /**
  * LeafletMapRenderer.
- * 
+ *
  * @author Henrik Westphal <henrik.westphal@gmail.com>
  */
 class LeafletMapRenderer extends AbstractMapRenderer
@@ -17,7 +17,7 @@ class LeafletMapRenderer extends AbstractMapRenderer
 
     /**
      * Renders the Map.
-     * 
+     *
      * @param Vich\GeographicalBundle\Map\Map $map The map
      * @return string The html output
      */
@@ -33,21 +33,21 @@ class LeafletMapRenderer extends AbstractMapRenderer
         }
 
         $html .= $this->renderMarkers($map);
-        
+
         if ($map->getAutoZoom()) {
             $html .= $this->setFitToBounds($map);
         } else {
             $html .= $this->setMapCenter($map);
         }
-        
+
         $html .= $this->renderCloseScriptTag();
-        
+
         return $html;
     }
-    
+
     /**
      * Renders any javascripts that the renderer needs to use.
-     * 
+     *
      * @return string The html output
      */
     public function renderJavascripts()
@@ -55,7 +55,7 @@ class LeafletMapRenderer extends AbstractMapRenderer
         $scripts = array(
             '<script type="text/javascript" src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>',
         );
-        
+
         return implode('', $scripts);
     }
 
@@ -76,7 +76,7 @@ class LeafletMapRenderer extends AbstractMapRenderer
 
     /**
      * Renders the map container.
-     * 
+     *
      * @param Map $map The map
      * @return string The html
      */
@@ -86,27 +86,27 @@ class LeafletMapRenderer extends AbstractMapRenderer
             $map->getWidth() . 'px' : $map->getWidth();
         $height = is_numeric(substr($map->getHeight(), -1)) ?
             $map->getHeight() . 'px' : $map->getHeight();
-        
+
         return sprintf('<div id="%s" style="width: %s; height: %s;"></div>',
             $map->getContainerId(),
             $width,
             $height
         );
     }
-    
+
     /**
      * Renders an open script tag.
-     * 
+     *
      * @return string The html
      */
     protected function renderOpenScriptTag()
     {
         return '<script type="text/javascript">';
     }
-    
+
     /**
      * Renders the cloudmade var.
-     * 
+     *
      * @param Map $map The map
      * @return string The html
      */
@@ -115,11 +115,11 @@ class LeafletMapRenderer extends AbstractMapRenderer
         if (static::$isCloudMadeRendered) {
             return '';
         }
-        
+
         static::$isCloudMadeRendered = true;
-        
+
         $apiKey = $this->getOption('leaflet_api_key');
-        
+
         return sprintf(
             "var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/%s/997/256/{z}/{x}/{y}.png', cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade', cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});",
             $apiKey
@@ -136,7 +136,7 @@ class LeafletMapRenderer extends AbstractMapRenderer
     protected function renderMapVar(Map $map)
     {
         return sprintf(
-            "var %s = new L.Map('%s'); map.addLayer(cloudmade);",
+            "var %1\$s = new L.Map('%2\$s'); %1\$s.addLayer(cloudmade);",
             $map->getVarName(),
             $map->getContainerId()
         );
@@ -145,7 +145,7 @@ class LeafletMapRenderer extends AbstractMapRenderer
 
     /**
      * Renders the map bounds var.
-     * 
+     *
      * @param Map $map The map
      * @return string The html
      */
@@ -156,25 +156,25 @@ class LeafletMapRenderer extends AbstractMapRenderer
             $this->getBoundsVarName($map)
         );
     }
-    
+
     /**
      * Renders the markers for the map.
-     * 
+     *
      * @param Map $map The map
      * @return string The html
      */
     protected function renderMarkers(Map $map)
     {
         $html = '';
-        
+
         foreach ($map->getMarkers() as $marker) {
             $lat = $marker->getCoordinate()->getLat();
             $lng = $marker->getCoordinate()->getLng();
-            
+
             if (is_null($lat) || is_null($lng)) {
                 continue;
             }
-            
+
             $html .= sprintf(
                 'var %s = new L.Marker(new L.LatLng(%s, %s)); %s.addLayer(%s);',
                 $marker->getVarName(),
@@ -183,7 +183,7 @@ class LeafletMapRenderer extends AbstractMapRenderer
                 $map->getVarName(),
                 $marker->getVarName()
             );
-            
+
             if (null !== $marker->getInfoWindow()) {
                 $html .= sprintf(
                     '%s.bindPopup("%s");',
@@ -191,7 +191,7 @@ class LeafletMapRenderer extends AbstractMapRenderer
                     $marker->getInfoWindow()->getContent()
                 );
             }
-            
+
             if ($map->getAutoZoom()) {
                 $html .= sprintf(
                     '%s.extend(%s.getLatLng());',
@@ -200,13 +200,13 @@ class LeafletMapRenderer extends AbstractMapRenderer
                 );
             }
         }
-        
+
         return $html;
     }
-    
+
     /**
      * Sets the map to auto zoom to the specified bounds.
-     * 
+     *
      * @param Map $map The map
      * @return string The html
      */
@@ -218,12 +218,12 @@ class LeafletMapRenderer extends AbstractMapRenderer
             $this->getBoundsVarName($map)
         );
     }
-    
+
     /**
      * Sets the center of the map.
-     * 
+     *
      * @param Map $map
-     * @return string The html 
+     * @return string The html
      */
     protected function setMapCenter(Map $map)
     {
@@ -234,20 +234,20 @@ class LeafletMapRenderer extends AbstractMapRenderer
             $map->getZoom()
         );
     }
-    
+
     /**
      * Renders a closing script tag.
-     * 
+     *
      * @return string The html
      */
     protected function renderCloseScriptTag()
     {
         return '</script>';
     }
-    
+
     /**
      * Gets the bounds variable name for the map.
-     * 
+     *
      * @param Map $map The map
      * @return string The var name
      */
