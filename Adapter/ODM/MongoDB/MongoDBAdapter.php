@@ -1,6 +1,6 @@
 <?php
 
-namespace Vich\GeographicalBundle\Adapter\ORM;
+namespace Vich\GeographicalBundle\Adapter\ODM\MongoDB;
 
 use Vich\GeographicalBundle\Adapter\AdapterInterface;
 use Doctrine\Common\EventArgs;
