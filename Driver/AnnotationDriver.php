@@ -77,7 +77,7 @@ class AnnotationDriver
             throw new \InvalidArgumentException();
         }
         
-        $refClass = new \ReflectionClass($obj);
+        $refClass = $this->resolveProxy($obj);
         
         foreach ($refClass->getMethods() as $method) {
             $annot = $this->reader->getMethodAnnotation($method, $this->geoQueryClass);
@@ -106,3 +106,4 @@ class AnnotationDriver
         return new \ReflectionClass($obj);
     }
 }
+
