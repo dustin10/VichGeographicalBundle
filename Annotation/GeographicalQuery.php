@@ -41,7 +41,8 @@ class GeographicalQuery
      * 
      * @param array $values The option values
      */
-    public function __construct(array $values) {
+    public function __construct(array $values)
+    {
         
     }
 }

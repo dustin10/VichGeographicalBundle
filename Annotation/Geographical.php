@@ -94,7 +94,8 @@ class Geographical
      * 
      * @param array $values The option values
      */
-    public function __construct(array $values) {
+    public function __construct(array $values)
+    {
         if (isset($values['on'])) {
             $this->on = $values['on'];
         }
