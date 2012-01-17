@@ -70,4 +70,25 @@ abstract class AbstractMapRenderer implements MapRendererInterface
      * @return string The html output
      */
     public function renderStylesheets() { }
+    
+    /**
+     * Renders the container attribute html string.
+     * 
+     * @param Map $map The map.
+     * @return string The html.
+     */
+    protected function renderAttributes(Map $map)
+    {
+        $attrs = $map->getContainerAttributes();
+        if (0 === count($attrs)) {
+            return '';
+        }
+        
+        $html = ' ';
+        foreach ($map->getContainerAttributes() as $attr => $value) {
+            $html .= sprintf('%s="%s"', $attr, $value);
+        }
+        
+        return $html;
+    }
 }

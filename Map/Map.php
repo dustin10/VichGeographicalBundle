@@ -56,6 +56,11 @@ class Map
     private $containerId;
     
     /**
+     * @var array $containerAttrs
+     */
+    private $containerAttrs;
+    
+    /**
      * @var integer $width
      */
     private $width;
@@ -284,6 +289,48 @@ class Map
     }
     
     /**
+     * Gets a map container attribute.
+     * 
+     * @param type $key The key
+     * @return mixed The value
+     */
+    public function getContainerAttribute($key)
+    {
+        return $this->containerAttrs[$key];
+    }
+    
+    /**
+     * Gets the map container attributes.
+     * 
+     * @return array The attributes.
+     */
+    public function getContainerAttributes()
+    {
+        return $this->containerAttrs;
+    }
+    
+    /**
+     * Sets a map container attribute.
+     * 
+     * @param type $key The key
+     * @param type $value The value
+     */
+    public function setContainerAttribute($key, $value)
+    {
+        $this->containerAttrs[$key] = $value;
+    }
+    
+    /**
+     * Sets the map container attributes.
+     * 
+     * @param array $attrs The attributes.
+     */
+    public function setContainerAttributes(array $attrs)
+    {
+        $this->containerAttrs = $attrs;
+    }
+    
+    /**
      * Gets the width.
      * 
      * @return integer The width
@@ -354,9 +401,11 @@ class Map
     public function __construct($containerId = 'map_canvas', $width = 300, $height = 300, $varName = 'map')
     {
         $this->containerId = $containerId;
+        $this->containerAttrs = array();
         $this->width = $width;
         $this->height = $height;
         $this->center = new MapCoordinate(48.8566, 2.3522);
+        
         $this->varName = $varName;
         if ($this->varName === 'map') {
             $this->varName = sprintf('map%s', uniqid());

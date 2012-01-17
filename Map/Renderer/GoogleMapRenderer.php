@@ -65,11 +65,20 @@ class GoogleMapRenderer extends AbstractMapRenderer
         $height = is_numeric(substr($map->getHeight(), -1)) ?
             $map->getHeight() . 'px' : $map->getHeight();
         
+        $containerStyle = sprintf('width: %s; height: %s;', $width, $height);
+        
+        $attrs = $map->getContainerAttributes();
+        
+        if (array_key_exists('style', $attrs)) {
+            $containerStyle .= $attrs['style'];
+        }
+        
+        $map->setContainerAttribute('style', $containerStyle);
+
         return sprintf(
-            '<div id="%s" style="width: %s; height: %s;"></div>',
+            '<div id="%s"%s></div>',
             $map->getContainerId(),
-            $width,
-            $height
+            $this->renderAttributes($map)
         );
     }
     
