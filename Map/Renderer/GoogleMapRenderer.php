@@ -159,14 +159,14 @@ class GoogleMapRenderer extends AbstractMapRenderer
                     $map->getVarName(),
                     $marker->getVarName()
                 );
+			}
                 
-                if (null !== $marker->getIcon()) {
-                    $html .= sprintf(
-                        '%s.setIcon("%s");',
-                        $marker->getVarName(),
-                        $marker->getIcon()
-                    );
-                }
+            if (null !== $marker->getIcon()) {
+                $html .= sprintf(
+                    '%s.setIcon("%s");',
+                    $marker->getVarName(),
+                    $marker->getIcon()
+                );
             }
             
             if ($map->getAutoZoom()) {
