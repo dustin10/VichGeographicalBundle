@@ -250,8 +250,7 @@ class Map
     /**
      * Adds a marker to the map.
      * 
-     * @param type $lat The longitude
-     * @param type $lng The latitude
+     * @param Marker $marker Marker
      */
     public function addMarker(MapMarker $marker)
     {
