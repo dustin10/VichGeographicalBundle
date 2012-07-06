@@ -24,9 +24,25 @@ Leaflet
 
 ### Get the bundle
 
-To install the bundle, place it in the `vendor/bundles/Vich/GeographicalBundle` 
-directory of your project. You can do this by adding the bundle to your deps file, 
-as a submodule, cloning it, or simply downloading the source.
+To install the bundle, place it in the `vendor/bundles/Vich/GeographicalBundle`
+directory of your project. You can do this by adding the bundle to your composer.json (Symfony 2.1),
+deps file (Symfony 2.0.*), as a submodule, cloning it, or simply downloading the source.
+
+Add VichGeographicalBundle in your `composer.json`:
+
+```
+{
+    "require": {
+        "vich/geographical-bundle": "*"
+    }
+}
+```
+
+Now tell composer to download the bundle by running the command:
+
+``` php composer.phar update vich/geographical-bundle ```
+
+Composer will install the bundle to your project's vendor/vich directory.
 
 Add to `deps` file:
 
@@ -115,14 +131,14 @@ class Location
     // ..
 
     /**
-     * @ORM\Column(type="decimal", scale="7")
+     * @ORM\Column(type="decimal", scale=7)
      */
-    protected $latitude
+    protected $latitude;
 
     /**
-     * @ORM\Column(type="decimal", scale="7")
+     * @ORM\Column(type="decimal", scale=7)
      */
-    protected $longitude
+    protected $longitude;
 
     // ..
 
