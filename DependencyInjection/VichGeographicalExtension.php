@@ -28,7 +28,7 @@ class VichGeographicalExtension extends Extension
      */
     private $tagMap = array(
         'orm' => 'doctrine.event_subscriber',
-        'mongodb' => 'doctrine.common.event_subscriber'
+        'mongodb' => 'doctrine_mongodb.odm.event_subscriber'
     );
     
     /**
