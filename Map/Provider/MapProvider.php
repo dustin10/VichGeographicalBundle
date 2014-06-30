@@ -3,6 +3,7 @@
 namespace Vich\GeographicalBundle\Map\Provider;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Vich\GeographicalBundle\Map\Map;
 
 /**
  * MapProvider.
@@ -54,6 +55,10 @@ class MapProvider
      */
     public function getMap($alias)
     {
+        if ($alias instanceof Map) {
+            return $alias;
+        }
+        
         if (!array_key_exists($alias, $this->maps)) {
             $this->loadMap($alias);
         }
