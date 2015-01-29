@@ -85,6 +85,10 @@ class VichGeographicalExtension extends Extension
         if (null !== $config['bing']['api_key']) {
             $rendererOptions['bing_api_key'] = $config['bing']['api_key'];
         }
+
+        if (null !== $config['google']['only_one_info_window']) {
+            $rendererOptions['google_only_one_info_window'] = $config['google']['only_one_info_window'];
+        }
         
         $container->setAlias('vich_geographical.query_service', $config['query_service']);
         $container->setAlias('vich_geographical.map_renderer', $config['map_renderer']);

@@ -266,6 +266,21 @@ vich_geographical:
     query_service: my_custom_service    
 ```
 
+## Overriding the default behaviour of infowindow in Google maps
+
+When the infowindow associated to a marker is opened by the user, the previous window of
+other infowindow opened preiously is not closed
+see https://developers.google.com/maps/documentation/javascript/infowindows#close
+You can change this behaviour using the google.only_one_info_window key in config.yml.
+
+``` yaml
+# app/config.yml
+vich_geographical:
+    # ...
+    google:
+        only_one_info_window: true
+```
+
 Twig Integration
 ================
 
@@ -531,4 +546,9 @@ vich_geographical:
     # if you specify the Bing map renderer then add your api key as follows
     bing:
         api_key: my_api_key
+
+    # if you specify the Google map renderer you can allow only one infowindow open for all markers in the map
+    # the default value is false, i.e. all the infowindow open for each marker have to be closed by visitor
+    google:
+        only_one_info_window: true
 ```
