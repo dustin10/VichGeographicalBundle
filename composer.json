@@ -1,22 +1,27 @@
 {
-    "name": "vich/geographical-bundle",
+    "name": "jlaso/geographical-bundle",
     "type": "symfony-bundle",
     "description": "Geographical functionality for ORM and ODM entities and JavaScript maps rendering",
     "keywords": ["maps", "geographical", "annotations", "google", "bing", "annotations"],
-    "homepage": "https://github.com/dustin10/VichGeographicalBundle",
+    "homepage": "https://github.com/jlaso/VichGeographicalBundle",
     "license": "MIT",
     "authors": [
         {
             "name": "Dustin Dobervich",
             "email": "ddobervich@gmail.com",
             "homepage": "http://www.dobervich.com"
+        },
+        {
+            "name": "Joseluis Laso",
+            "email": "jlaso@joseluislaso.es",
+            "homepage": "http://www.joseluislaso.es"
         }
     ],
     "require": {
         "php": ">=5.3.2"
     },
     "autoload": {
-        "psr-0": { "Vich\\GeographicalBundle": "" }
+        "psr-0": { "JLaso\\GeographicalBundle": "" }
     },
-    "target-dir": "Vich/GeographicalBundle"
+    "target-dir": "JLaso/GeographicalBundle"
 }
