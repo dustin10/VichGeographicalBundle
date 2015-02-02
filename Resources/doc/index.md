@@ -32,6 +32,9 @@ Add VichGeographicalBundle in your `composer.json`:
 
 ```
 {
+    "repositories": [
+        {"type":"vcs", "url":"https://github.com/jlaso/VichGeographicalBundle.git"}
+    ],
     "require": {
         "vich/geographical-bundle": "*"
     }
@@ -266,6 +269,21 @@ vich_geographical:
     query_service: my_custom_service    
 ```
 
+## Overriding the default behaviour of infowindow in Google maps
+
+When the infowindow associated to a marker is opened by the user, the previous window of
+other infowindow opened preiously is not closed
+see https://developers.google.com/maps/documentation/javascript/infowindows#close
+You can change this behaviour using the google.only_one_info_window key in config.yml.
+
+``` yaml
+# app/config.yml
+vich_geographical:
+    # ...
+    google:
+        only_one_info_window: true
+```
+
 Twig Integration
 ================
 
@@ -465,10 +483,10 @@ rendered with `vichgeo_map`.
 {{ vichgeo_map('pre_configured') }}
 ```
 
-Popup Info Windows
-==================
+Popup InfoWindows
+=================
 
-The bundle supports popup info windows when map markers are clicked. Use 
+The bundle supports popup infowindows when map markers are clicked. Use 
 the `setShowInfoWindowsForMarkers` setter of the `Map` class to activate or 
 deactivate (default) this feature. A default template for the content of the 
 popup has been provided, but it is strongly recommended that you create a twig/php 
@@ -531,4 +549,9 @@ vich_geographical:
     # if you specify the Bing map renderer then add your api key as follows
     bing:
         api_key: my_api_key
+
+    # if you specify the Google map renderer you can allow only one infowindow open for all markers in the map
+    # the default value is false, i.e. all the infowindow open for each marker have to be closed by visitor
+    google:
+        only_one_info_window: true
 ```

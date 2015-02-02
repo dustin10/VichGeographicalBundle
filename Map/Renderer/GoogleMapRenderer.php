@@ -46,7 +46,7 @@ class GoogleMapRenderer extends AbstractMapRenderer
     public function renderJavascripts()
     {
         $scripts = array(
-            '<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>'
+            '<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>'
         );
         
         return implode('', $scripts);
@@ -131,6 +131,12 @@ class GoogleMapRenderer extends AbstractMapRenderer
     protected function renderMarkers(Map $map)
     {
         $html = '';
+
+        $oneInfowindowOnly = $this->options['google_only_one_info_window'];
+        if($oneInfowindowOnly){
+            $infowindowVar = uniqid('infowindow_');
+            $html .= sprintf('var %s = null;', $infowindowVar);
+        }
         
         foreach ($map->getMarkers() as $marker) {
             $lat = $marker->getCoordinate()->getLat();
@@ -149,12 +155,23 @@ class GoogleMapRenderer extends AbstractMapRenderer
             );
             
             if (null !== $marker->getInfoWindow()) {
+                $hackClosewindow = '';
+                if($oneInfowindowOnly){
+                    $hackClosewindow = sprintf(
+                        'if (%s) %s.close(); %s = %s;',
+                        $infowindowVar,
+                        $infowindowVar,
+                        $infowindowVar,
+                        $marker->getInfoWindow()->getVarName()
+                    );
+                };
                 $html .= sprintf(
                     'var %s = new google.maps.InfoWindow({
-                    content: "%s"}); google.maps.event.addListener(%s, "click", function (e) {%s.open (%s, %s); });',
+                    content: "%s"}); google.maps.event.addListener(%s, "click", function (e) {%s %s.open (%s, %s); });',
                     $marker->getInfoWindow()->getVarName(),
                     $marker->getInfoWindow()->getContent(),
                     $marker->getVarName(),
+                    $hackClosewindow,
                     $marker->getInfoWindow()->getVarName(),
                     $map->getVarName(),
                     $marker->getVarName()

@@ -13,9 +13,9 @@ own map renderer.
 
 For usage documentation, see:
 
-[Resources/doc/index.md](https://github.com/dustin10/VichGeographicalBundle/blob/master/Resources/doc/index.md)
+[Resources/doc/index.md](https://github.com/jlaso/VichGeographicalBundle/blob/master/Resources/doc/index.md)
     
 
 For license, see:
 
-[Resources/meta/LICENSE](https://github.com/dustin10/VichGeographicalBundle/blob/master/Resources/meta/LICENSE)
+[Resources/meta/LICENSE](https://github.com/jlaso/VichGeographicalBundle/blob/master/Resources/meta/LICENSE)
