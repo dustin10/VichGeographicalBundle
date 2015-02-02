@@ -480,10 +480,10 @@ rendered with `vichgeo_map`.
 {{ vichgeo_map('pre_configured') }}
 ```
 
-Popup Info Windows
-==================
+Popup InfoWindows
+=================
 
-The bundle supports popup info windows when map markers are clicked. Use 
+The bundle supports popup infowindows when map markers are clicked. Use 
 the `setShowInfoWindowsForMarkers` setter of the `Map` class to activate or 
 deactivate (default) this feature. A default template for the content of the 
 popup has been provided, but it is strongly recommended that you create a twig/php 
