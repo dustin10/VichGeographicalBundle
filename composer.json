@@ -1,5 +1,5 @@
 {
-    "name": "jlaso/geographical-bundle",
+    "name": "vich/geographical-bundle",
     "type": "symfony-bundle",
     "description": "Geographical functionality for ORM and ODM entities and JavaScript maps rendering",
     "keywords": ["maps", "geographical", "annotations", "google", "bing", "annotations"],
