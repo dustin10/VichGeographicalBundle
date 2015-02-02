@@ -32,6 +32,9 @@ Add VichGeographicalBundle in your `composer.json`:
 
 ```
 {
+    "repositories": [
+        {"type":"vcs", "url":"https://github.com/jlaso/VichGeographicalBundle.git"}
+    ],
     "require": {
         "vich/geographical-bundle": "*"
     }
