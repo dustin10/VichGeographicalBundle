@@ -21,7 +21,7 @@
         "php": ">=5.3.2"
     },
     "autoload": {
-        "psr-0": { "JLaso\\GeographicalBundle": "" }
+        "psr-0": { "Vich\\GeographicalBundle": "" }
     },
-    "target-dir": "JLaso/GeographicalBundle"
+    "target-dir": "Vich/GeographicalBundle"
 }
